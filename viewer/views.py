@@ -5,7 +5,7 @@ from django.shortcuts import render
 class Index(View):
 	title = "Wasa Wasa Weather"
 	template = 'viewer/index.html'
-	component = 'viewer/bundle.js'
+	component = 'bundle.js'
 
 	def get(self, request):
 		props = {

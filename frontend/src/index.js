@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 function TestComponent(props) {
+	console.log(props.test);
 	return (
 		<div>
-			{this.props.test}
+			{props.test}<br />
+			also hello world
 		</div>
 	);
 }
 
 ReactDOM.render(
-	<TestComponent {...window.props} />,
+	<TestComponent test={window.props.test} />,
 	window.react_mount,
 )

@@ -1,4 +1,5 @@
 {% load static %}
+{% load jsontag %}
 
 <head>
 	<title>{% block page_title %}{{ title }}{% endblock page_title %}</title>
@@ -11,8 +12,8 @@
 	</div>
 
 	<script>
-		window.props = {{props}}
+		window.props = {{props|json}}
 		window.react_mount = document.getElementById('react');
 	</script>
-	<script src="{% static 'viewer/{{component}}' %}"></script>
+	<script src="{% static 'viewer/' %}{{ component }}"></script>
 </body>
