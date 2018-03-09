@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+
+function TestComponent(props) {
+	return (
+		<div>
+			{this.props.test}
+		</div>
+	);
+}
 
 ReactDOM.render(
-	React.createElement(App, window.props),
+	<TestComponent {...window.props} />,
 	window.react_mount,
 )
-registerServiceWorker();
