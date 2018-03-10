@@ -22,3 +22,6 @@ yarn-error.log*
 
 **/__pycache__/*
 venv/*
+
+piweatherviewer/access_key_id.txt
+piweatherviewer/secret_access_key.txt
