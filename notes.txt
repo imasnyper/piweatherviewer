@@ -1,0 +1,2 @@
+- post new photos to site via Django REST API
+- httpie command: 'http --form POST :8000/api/add_photo photo@[name of photo]

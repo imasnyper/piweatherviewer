@@ -16,7 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from viewer import views
+
+app_name = 'viewer'
+
 urlpatterns = [
 	path('', include('viewer.urls')),
+	path('api/add_photo', views.AddPhoto.as_view(), name='api_add_photo'),
+    path('api/add_reading', views.AddReading.as_view(), name='api_add_reading'),
     path('admin/', admin.site.urls),
 ]

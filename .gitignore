@@ -25,3 +25,6 @@ venv/*
 
 piweatherviewer/access_key_id.txt
 piweatherviewer/secret_access_key.txt
+piweatherviewer/credentials.zip
+
+**/migrations/*
