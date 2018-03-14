@@ -1,12 +1,10 @@
 const path = require('path');
 
-console.log(path.resolve(__dirname, 'dist'));
-
 module.exports = {
 	entry: './src/index.js',
 	output: {
 		filename: 'bundle.js',
-		path: path.resolve(__dirname, '../viewer/static/viewer')
+		path: path.resolve(__dirname, '../viewer/static/viewer/js')
 	},
 	module: {
 		rules: [

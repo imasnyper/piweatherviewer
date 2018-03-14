@@ -121,10 +121,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'viewer/static'),
-]
-
 with open(os.path.join(BASE_DIR, 'piweatherviewer', 'access_key_id.txt'), 'r') as f:
     AWS_ACCESS_KEY_ID = f.readline().strip()
 

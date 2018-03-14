@@ -3,6 +3,13 @@
 
 <head>
 	<title>{% block page_title %}{{ title }}{% endblock page_title %}</title>
+	<link rel="stylesheet" href="{% static 'viewer/css/main.css' %}"/>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="author" content="Daniel Hayes">
+	<meta name="description" content="website to view data recorded from a Raspberry Pi Weather Station">
+	<meta name="keywords" content="weather, pi, raspberry pi, python, javascript, react">
+	<!-- <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon"> -->
 </head>
 <body>
 	<div id="react">
@@ -15,5 +22,5 @@
 		window.props = {{props|json}}
 		window.react_mount = document.getElementById('react');
 	</script>
-	<script src="{% static 'viewer/' %}{{ component }}"></script>
+	<script src="{% static 'viewer/js/' %}{{ component }}"></script>
 </body>

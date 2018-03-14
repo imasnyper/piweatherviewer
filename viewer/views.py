@@ -16,7 +16,11 @@ class Index(View):
 
 	def get(self, request):
 		photos = Photo.objects.all()
-		photos = [AWS_MEDIA_LOCATION + p.photo.name for p in photos]
+		photos = [{
+					'location': AWS_MEDIA_LOCATION + p.photo.name,
+					'name': p.photo.name,
+				  }
+				  for p in photos]
 		readings = Reading.objects.order_by('date_time')
 		readings = [{
 						'temperature': r.temperature,

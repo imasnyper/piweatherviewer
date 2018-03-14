@@ -13,7 +13,7 @@ function TestComponent(props) {
 
 function Reading(props) {
 	return (
-		<div>
+		<div className="reading">
 			{props.temperature}<br />
 			{props.humidity}<br />
 			{props.pressure}<br />
@@ -24,10 +24,11 @@ function Reading(props) {
 
 function Readings(props) {
 	return (
-		<div>
+		<div className="readings">
 			{props.readings.map((elem, i) => {
 				return (
 					<Reading
+						key={i}
 						temperature={elem.temperature}
 						humidity={elem.humidity}
 						pressure={elem.pressure}
@@ -40,22 +41,50 @@ function Readings(props) {
 }
 
 function Photos(props) {
+	let imgStyle = 	{ 	width: '100%',
+						maxWidth: props.width
+					}
 	return (
-		<div>
+		<div className='photo'>
 			{props.photos.map((elem, i) => {
-				return <img src={elem} key={i}></img>
+				return (<a title={elem.name} key={i}>
+						<img 
+							src={elem.location}  
+							alt={elem.name}
+							style={{ imgStyle }}>
+						</img>
+					   </a>)
 			})}
 		</div>
 	)
 }
 
 class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { width: 0, height: 0 }
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+	}
+
+	componentDidMount() {
+		this.updateWindowDimensions();
+		window.addEventListener('resize', this.updateWindowDimensions);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+
+	updateWindowDimensions() {
+		this.setState({ width: window.innerWidth, height: window.innerHeight})
+	}
+
 	render() {
 		return (
-			<div>
+			<div className='react-app'>
 				<TestComponent test={window.props.test} />
 				<Readings readings={window.props.readings} />
-				<Photos photos={window.props.photos} />
+				<Photos photos={window.props.photos} maxWidth={this.state.width} />
 			</div>
 		);
 	}

@@ -19,7 +19,7 @@ class Reading(models.Model):
 	date_time = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):
-		return self.date_time
+		return str(self.date_time)
 
 	def __repr__(self):
-		return self.date_time
+		return str(self.date_time)
