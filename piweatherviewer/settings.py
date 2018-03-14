@@ -128,7 +128,7 @@ STATICFILES_DIRS = [
 with open(os.path.join(BASE_DIR, 'piweatherviewer', 'access_key_id.txt'), 'r') as f:
     AWS_ACCESS_KEY_ID = f.readline().strip()
 
-with open(os.path.join(BASE_DIR, 'piweatherviewer', 'secret_access_key.txt.'), 'r') as f:
+with open(os.path.join(BASE_DIR, 'piweatherviewer', 'secret_access_key.txt'), 'r') as f:
     AWS_SECRET_ACCESS_KEY = f.readline().strip()
     
 
