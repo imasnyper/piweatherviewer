@@ -1,5 +1,6 @@
 from django.views import View
 from django.shortcuts import render
+from django.utils import timezone
 
 from viewer.models import Photo, Reading
 from viewer.serializers import PhotoSerializer, ReadingSerializer
@@ -21,16 +22,16 @@ class Index(View):
 					'name': p.photo.name,
 				  }
 				  for p in photos]
-		readings = Reading.objects.order_by('date_time')
+		current_timezone = timezone.get_current_timezone()
+		readings = Reading.objects.order_by('-date_time')
 		readings = [{
 						'temperature': r.temperature,
 						'humidity': r.humidity,
 						'pressure': r.pressure,
-						'date_time': str(r.date_time),
+						'date_time': str(current_timezone.normalize(r.date_time.astimezone(current_timezone))),
 					}
 					for r in readings]
 		props = {
-			'test': 'this is my test prop',
 			'photos': photos,
 			'readings': readings,
 		}

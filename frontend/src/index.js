@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-function TestComponent(props) {
-	console.log(props.test);
-	return (
-		<div>
-			{props.test}<br />
-			also hello world
-		</div>
-	);
-}
-
 function Reading(props) {
 	return (
 		<div className="reading">
@@ -41,7 +31,7 @@ function Readings(props) {
 }
 
 function Photos(props) {
-	let imgStyle = 	{ 	width: '100%',
+	let imgStyle = 	{ 	
 						maxWidth: props.width
 					}
 	return (
@@ -51,12 +41,20 @@ function Photos(props) {
 						<img 
 							src={elem.location}  
 							alt={elem.name}
-							style={{ imgStyle }}>
+							style={ imgStyle }>
 						</img>
 					   </a>)
 			})}
 		</div>
 	)
+}
+
+function Navbar(props) {
+	return (
+		<div class="navbar">
+			<h1>Wasa Wasa Weather</h1>
+		</div>
+	);
 }
 
 class App extends Component {
@@ -82,9 +80,9 @@ class App extends Component {
 	render() {
 		return (
 			<div className='react-app'>
-				<TestComponent test={window.props.test} />
+				<Navbar />
 				<Readings readings={window.props.readings} />
-				<Photos photos={window.props.photos} maxWidth={this.state.width} />
+				<Photos photos={window.props.photos} width={this.state.width} />
 			</div>
 		);
 	}

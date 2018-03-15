@@ -1,0 +1,25 @@
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+body {
+	margin: 0;
+}
+
+.reading {
+	padding: 5px;
+}
+
+.navbar {
+	width: 100%;
+	text-align: center;
+}
