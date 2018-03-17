@@ -1,6 +1,9 @@
 import React from 'react';
 
 export function Photos(props) {
+	if (props.photos === null) {
+		return;
+	}
 	let imgStyle = 	{ 	
 						maxWidth: props.width
 					}
