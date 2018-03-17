@@ -5,7 +5,7 @@ export function Reading(props) {
 		<div className="reading">
 			<div className="temp">
 				<span className="temp-number">
-					{parseInt(props.temperature).toFixed(2)}
+					{parseFloat(props.temperature).toFixed(2)}
 				</span>
 				<span className="temp-text">
 					&deg;C
@@ -13,7 +13,7 @@ export function Reading(props) {
 			</div>
 			<div className="humidity">
 				<span className="humidity-number">
-					{parseInt(props.humidity).toFixed(2)}
+					{parseFloat(props.humidity).toFixed(2)}
 				</span>
 				<span className="humidity-text">
 					% Humidity
@@ -21,7 +21,7 @@ export function Reading(props) {
 			</div>
 			<div className="pressure">
 				<span className="pressure-number">
-					{parseInt(props.pressure).toFixed(0)}
+					{parseFloat(props.pressure).toFixed(0)}
 				</span>
 				<span className="pressure-text">
 					mbar
