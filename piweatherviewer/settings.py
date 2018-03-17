@@ -122,11 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 AWS_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY_ID", "")
-AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY", "")
-
-with open(os.path.join(BASE_DIR, 'piweatherviewer', 'secret_access_key.txt'), 'r') as f:
-    AWS_SECRET_ACCESS_KEY = f.readline().strip()
-    
+AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY", "")    
 
 AWS_STORAGE_BUCKET_NAME = 'piweatherstation'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
