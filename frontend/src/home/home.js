@@ -27,7 +27,7 @@ class Home extends Component {
 		return (
 			<div className='react-app'>
 				<Readings readings={window.props.readings} />
-				<Photos photos={window.props.photos} width={this.props.width}/>
+				<Photos photos={window.props.photos} width={this.state.width}/>
 			</div>
 		);
 	}

@@ -24,7 +24,7 @@ export function Reading(props) {
 					{parseFloat(props.pressure).toFixed(0)}
 				</span>
 				<span className="pressure-text">
-					mbar
+					 mbar
 				</span>
 			</div>
 			<div className="reading-time">
