@@ -1,7 +1,7 @@
 {% load static %}
 {% load jsontag %}
 
-<head>
+<head profile="http://www.w3.org/2005/10/profile">
 	<title>{% block page_title %}{{ title }}{% endblock page_title %}</title>
 	<link rel="stylesheet" href="{% static 'viewer/css/main.css' %}"/>
 	<meta charset="UTF-8">
@@ -9,7 +9,7 @@
 	<meta name="author" content="Daniel Hayes">
 	<meta name="description" content="website to view data recorded from a Raspberry Pi Weather Station">
 	<meta name="keywords" content="weather, pi, raspberry pi, python, javascript, react">
-	<link rel="shortcut icon" href="{% static 'viewer/favicon.ico' %}" type="image/vnd.microsoft.icon">
+	<link rel="icon" type="image/x-icon" href="{% static 'viewer/favicon.ico' %}">
 </head>
 <body>
 	<div class="navbar">
