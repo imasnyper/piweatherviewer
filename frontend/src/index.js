@@ -41,9 +41,9 @@ function Readings(props) {
 }
 
 function Photos(props) {
-	let imgStyle = 	{ 	width: '100%',
-						maxWidth: props.width
+	let imgStyle = 	{ 	maxWidth: props.width - 12
 					}
+	console.log(props.width);
 	return (
 		<div className='photo'>
 			{props.photos.map((elem, i) => {
@@ -51,7 +51,7 @@ function Photos(props) {
 						<img 
 							src={elem.location}  
 							alt={elem.name}
-							style={{ imgStyle }}>
+							style={ imgStyle }>
 						</img>
 					   </a>)
 			})}
@@ -84,7 +84,7 @@ class App extends Component {
 			<div className='react-app'>
 				<TestComponent test={window.props.test} />
 				<Readings readings={window.props.readings} />
-				<Photos photos={window.props.photos} maxWidth={this.state.width} />
+				<Photos photos={window.props.photos} width={this.state.width} />
 			</div>
 		);
 	}
