@@ -121,8 +121,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-with open(os.path.join(BASE_DIR, 'piweatherviewer', 'access_key_id.txt'), 'r') as f:
-    AWS_ACCESS_KEY_ID = f.readline().strip()
+AWS_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY", "")
 
 with open(os.path.join(BASE_DIR, 'piweatherviewer', 'secret_access_key.txt'), 'r') as f:
     AWS_SECRET_ACCESS_KEY = f.readline().strip()
