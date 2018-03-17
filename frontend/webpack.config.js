@@ -1,9 +1,12 @@
 const path = require('path');
 
 module.exports = {
-	entry: './src/index.js',
+	entry: {
+		'home.js': './src/home/home.js',
+		'history.js': './src/history/history.js',
+	},
 	output: {
-		filename: 'bundle.js',
+		filename: '[name]',
 		path: path.resolve(__dirname, '../viewer/static/viewer/js')
 	},
 	module: {

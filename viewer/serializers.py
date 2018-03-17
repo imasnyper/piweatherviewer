@@ -8,6 +8,7 @@ class PhotoSerializer(serializers.ModelSerializer):
 		fields = ('photo',)
 
 class ReadingSerializer(serializers.ModelSerializer):
+	date_time = serializers.DateTimeField()
 	class Meta:
 		model = Reading
-		fields = ('temperature', 'humidity', 'pressure',)
+		fields = ('temperature', 'humidity', 'pressure', 'date_time')
