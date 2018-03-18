@@ -43,7 +43,7 @@ class Home(View):
 						'name': photo.photo.name,
 					}
 		current_timezone = timezone.get_current_timezone()
-		reading = prep_readings([Reading.objects.last()])
+		reading = prep_readings([Reading.objects.last()])[0]
 		props = {
 			'photos': [photo,],
 			'readings': reading,

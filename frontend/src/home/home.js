@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Readings } from '../components/readings';
+import { Reading } from '../components/readings';
 import { Photos } from '../components/photos';
 
 class Home extends Component {
@@ -24,9 +24,15 @@ class Home extends Component {
 	}
 
 	render() {
+		const d = new Date(window.props.reading.date_string);
 		return (
 			<div className='react-app'>
-				<Readings readings={window.props.readings} />
+				<Reading
+					temperature={window.props.reading.temperature}
+					humidity={window.props.reading.humidity}
+					pressure={window.props.reading.pressure}
+					date={d}>
+				</Reading>
 				<Photos photos={window.props.photos} width={this.state.width}/>
 			</div>
 		);
