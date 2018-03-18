@@ -145,4 +145,4 @@ MEDIA_ROOT = 'media'
 
 MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIA_ROOT)
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
