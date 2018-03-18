@@ -28,7 +28,7 @@ export function Reading(props) {
 				</span>
 			</div>
 			<div className="reading-time">
-				{props.date_time}
+				{props.year}-{props.month}-{props.day} {props.hour}:{props.minute}:{props.second}
 			</div>
 		</div>
 	);
