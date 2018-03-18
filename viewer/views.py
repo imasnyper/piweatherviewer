@@ -46,7 +46,7 @@ class Home(View):
 		reading = prep_readings([Reading.objects.last()])[0]
 		props = {
 			'photos': [photo,],
-			'readings': reading,
+			'reading': reading,
 		}
 
 		context = {
