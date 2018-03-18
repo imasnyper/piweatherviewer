@@ -14,6 +14,14 @@
 <body>
 	<div class="navbar">
 		<h1>{{ title }}</h1>
+		<div class="nav-items">
+			<div class="nav-item home">
+				<a href="{% url 'viewer:home' %}">Home</a>
+			</div>
+			<div class="nav-item history">
+				<a href="{% url 'viewer:history' %}">History</a>
+			</div>
+		</div>
 	</div>
 	<div id="react">
 		<div class="info">

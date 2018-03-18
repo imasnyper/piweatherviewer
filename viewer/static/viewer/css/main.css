@@ -26,3 +26,7 @@ body {
 	width: 100%;
 	text-align: center;
 }
+
+.nav-item {
+	display: inline-block;
+}
