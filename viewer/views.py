@@ -8,6 +8,7 @@ from viewer.serializers import PhotoSerializer, ReadingSerializer
 from rest_framework import generics
 
 AWS_MEDIA_LOCATION = 'https://s3.us-east-2.amazonaws.com/piweatherstation/media/'
+AWS_STATIC_LOCATION = "https://s3.us-east-2.amazonaws.com/piweatherstation/static/"
 
 # Create your views here.
 class Home(View):
@@ -40,6 +41,7 @@ class Home(View):
 			'title': self.title,
 			'component': self.component,
 			'props': props,
+			's3_static': AWS_STATIC_LOCATION,
 		}
 
 		return render(request, self.template, context)
@@ -74,6 +76,7 @@ class History(View):
 			'title': self.title,
 			'component': self.component,
 			'props': props,
+			's3_static': AWS_STATIC_LOCATION,
 		}
 
 		return render(request, self.template, context)

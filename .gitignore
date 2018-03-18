@@ -28,3 +28,4 @@ piweatherviewer/secret_access_key.txt
 piweatherviewer/credentials.zip
 
 **/migrations/*
+.env
