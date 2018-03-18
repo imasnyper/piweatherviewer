@@ -10,6 +10,35 @@ from rest_framework import generics
 AWS_MEDIA_LOCATION = 'https://s3.us-east-2.amazonaws.com/piweatherstation/media/'
 AWS_STATIC_LOCATION = "https://s3.us-east-2.amazonaws.com/piweatherstation/static/"
 
+
+def prep_readings(readings):
+	current_timezone = timezone.get_current_timezone()
+	readings_prop = []
+	for reading in readings:
+		normalized = current_timezone.normalize(reading.date_time.astimezone(current_timezone))
+		year = normalized.year
+		month = normalized.month
+		day = normalized.day
+		hour = normalized.hour
+		minute = normalized.minute
+		second = normalized.second
+
+		reading_dict = {
+							'temperature': r.temperature,
+							'humidity': r.humidity,
+							'pressure': r.pressure,
+							'year': year,
+							'month': month,
+							'day': day,
+							'hour': hour,
+							'minute': minute,
+							'second': second,
+						}
+
+		readings_prop.append(reading_dict)
+
+	return readings_prop
+
 # Create your views here.
 class Home(View):
 	title = "Wasa Wasa Weather"
@@ -24,17 +53,10 @@ class Home(View):
 						'name': photo.photo.name,
 					}
 		current_timezone = timezone.get_current_timezone()
-		reading = Reading.objects.last()
-		if reading:
-			reading = 	{
-							'temperature': reading.temperature,
-							'humidity': reading.humidity,
-							'pressure': reading.pressure,
-							'date_time': str(current_timezone.normalize(reading.date_time.astimezone(current_timezone))),
-					   	}
+		reading = prep_readings(Reading.objects.last())
 		props = {
 			'photos': [photo,],
-			'readings': [reading,],
+			'readings': reading,
 		}
 
 		context = {
@@ -58,15 +80,8 @@ class History(View):
 					'name': p.photo.name,
 				  }
 				  for p in photos]
-		current_timezone = timezone.get_current_timezone()
-		readings = Reading.objects.order_by('-date_time')
-		readings = [{
-						'temperature': r.temperature,
-						'humidity': r.humidity,
-						'pressure': r.pressure,
-						'date_time': str(current_timezone.normalize(r.date_time.astimezone(current_timezone))),
-					}
-					for r in readings]
+		
+		readings = prep_readings(Reading.objects.order_by('-date_time'))
 		props = {
 			'photos': photos,
 			'readings': readings,

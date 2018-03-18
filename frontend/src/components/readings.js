@@ -44,7 +44,12 @@ export function Readings(props) {
 						temperature={elem.temperature}
 						humidity={elem.humidity}
 						pressure={elem.pressure}
-						date_time={elem.date_time}>
+						year={elem.year}
+						month={elem.month}
+						day={elem.day}
+						hour={elem.hour}
+						minute={elem.minute}
+						second={elem.second}>
 					</Reading>
 				)
 			})}
