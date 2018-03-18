@@ -24,9 +24,9 @@ def prep_readings(readings):
 		second = normalized.second
 
 		reading_dict = {
-							'temperature': r.temperature,
-							'humidity': r.humidity,
-							'pressure': r.pressure,
+							'temperature': reading.temperature,
+							'humidity': reading.humidity,
+							'pressure': reading.pressure,
 							'year': year,
 							'month': month,
 							'day': day,
@@ -53,7 +53,7 @@ class Home(View):
 						'name': photo.photo.name,
 					}
 		current_timezone = timezone.get_current_timezone()
-		reading = prep_readings(Reading.objects.last())
+		reading = prep_readings([Reading.objects.last()])
 		props = {
 			'photos': [photo,],
 			'readings': reading,
