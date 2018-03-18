@@ -1,6 +1,7 @@
 import React from 'react';
 
 export function Reading(props) {
+	const d = new Date(props.date_string)
 	return (
 		<div className="reading">
 			<div className="temp">
@@ -28,7 +29,7 @@ export function Reading(props) {
 				</span>
 			</div>
 			<div className="reading-time">
-				{props.year}-{props.month}-{props.day} {props.hour}:{props.minute}:{props.second}
+				{d}
 			</div>
 		</div>
 	);
@@ -44,12 +45,7 @@ export function Readings(props) {
 						temperature={elem.temperature}
 						humidity={elem.humidity}
 						pressure={elem.pressure}
-						year={elem.year}
-						month={elem.month}
-						day={elem.day}
-						hour={elem.hour}
-						minute={elem.minute}
-						second={elem.second}>
+						date_string={elem.date_string}>
 					</Reading>
 				)
 			})}

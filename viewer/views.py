@@ -16,23 +16,13 @@ def prep_readings(readings):
 	readings_prop = []
 	for reading in readings:
 		normalized = current_timezone.normalize(reading.date_time.astimezone(current_timezone))
-		year = f"{normalized.year}"
-		month = f"{normalized.month:02}"
-		day = f"{normalized.day:02}"
-		hour = f"{normalized.hour:02}"
-		minute = f"{normalized.minute:02}"
-		second = f"{normalized.second:02}"
+		date_string = normalized.strftime("%Y-%m-%dT%H:%M:%S")
 
 		reading_dict = {
 							'temperature': reading.temperature,
 							'humidity': reading.humidity,
 							'pressure': reading.pressure,
-							'year': year,
-							'month': month,
-							'day': day,
-							'hour': hour,
-							'minute': minute,
-							'second': second,
+							'date_string': date_string,
 						}
 
 		readings_prop.append(reading_dict)
