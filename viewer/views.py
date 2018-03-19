@@ -46,7 +46,7 @@ class Home(View):
 		reading = prep_readings([Reading.objects.last()])[0]
 		props = {
 			'photos': [photo,],
-			'readings': reading,
+			'reading': reading,
 		}
 
 		context = {
@@ -55,6 +55,8 @@ class Home(View):
 			'props': props,
 			's3_static': AWS_STATIC_LOCATION,
 		}
+
+		print(context)
 
 		return render(request, self.template, context)
 
