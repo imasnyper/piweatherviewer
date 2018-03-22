@@ -33,12 +33,30 @@ class History extends Component {
 			});
 		}
 		else if (unit === 3) {
-			let mu = !this.state.metricUnits;
-			this.setState({
-				metricUnits: mu,
-				tempMetric: mu,
-				pressureMetric: mu,
-			});
+			if(this.state.tempMetric === this.state.pressureMetric) {
+				if(this.state.tempMetric === this.state.metricUnits) {
+					this.setState({
+						metricUnits: !this.state.metricUnits,
+						tempMetric: !this.state.tempMetric,
+						pressureMetric: !this.state.pressureMetric,
+					});
+				}
+				else {
+					let mu = !this.state.metricUnits
+					this.setState({
+						metricUnits: mu,
+						tempMetric: !this.state.tempMetric,
+						pressureMetric: !this.state.pressureMetric
+					});
+				}
+			} else {
+				let mu = !this.state.metricUnits;
+				this.setState({
+					metricUnits: mu,
+					tempMetric: mu,
+					pressureMetric: mu,
+				});
+			}
 		}
 	}
 

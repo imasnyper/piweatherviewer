@@ -1,7 +1,9 @@
 from django.views import View
 from django.shortcuts import render
 from django.utils import timezone
+from django.template import RequestContext
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.conf import settings
 
 from viewer.models import Photo, Reading
 from viewer.serializers import PhotoSerializer, ReadingSerializer
@@ -50,14 +52,15 @@ class Home(View):
 			'reading': reading,
 		}
 
+		debug = settings.DEBUG
+
 		context = {
 			'title': self.title,
 			'component': self.component,
 			'props': props,
 			's3_static': AWS_STATIC_LOCATION,
+			'debug': settings.DEBUG,
 		}
-
-		print(context)
 
 		return render(request, self.template, context)
 
@@ -85,6 +88,7 @@ class History(View):
 			'component': self.component,
 			'props': props,
 			's3_static': AWS_STATIC_LOCATION,
+			'debug': settings.DEBUG
 		}
 
 		return render(request, self.template, context)

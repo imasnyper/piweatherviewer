@@ -34,6 +34,10 @@ else:
                  "wasaweather.com", "www.wasaweather.com"]
 
 
+
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
 # Application definition
 
 INSTALLED_APPS = [
@@ -148,10 +152,11 @@ if not DEBUG:
     MEDIA_ROOT = 'media'
 
     MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIA_ROOT)
+
+    django_heroku.settings(locals())
+
 else:
     STATIC_URL = '/static/'
     STATIC_ROOT = 'static'
     MEDIA_ROOT = 'static/media'
     MEDIA_URL = '/media/'
-
-# django_heroku.settings(locals())
