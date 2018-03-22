@@ -1,5 +1,10 @@
 import React from 'react';
 
+const style = {
+	cursor: 'pointer',
+	userSelect: 'none',
+}
+
 export function Reading(props) {
 	const year = props.date.getFullYear();
 	const month = ("00" + (props.date.getMonth() + 1)).slice(-2);
@@ -7,14 +12,31 @@ export function Reading(props) {
 	const hour = ("00" + props.date.getHours()).slice(-2);
 	const minute = ("00" + props.date.getMinutes()).slice(-2);
 	const second = ("00" + props.date.getSeconds()).slice(-2);
+
+	let temp, pressure, temp_unit, pressure_unit;
+
+	if(!props.tempMetric){
+		temp = props.temperature * 9 / 5 + 32;
+		temp_unit = 'F';
+	} else {
+		temp = props.temperature;
+		temp_unit = 'C';
+	}
+	if (!props.pressureMetric) {
+		pressure = props.pressure / 33.86388101478402;
+		pressure_unit = 'inHg';
+	} else {
+		pressure = props.pressure;
+		pressure_unit = 'mbar';
+	}
 	return (
 		<div className="reading">
-			<div className="temp">
+			<div className="temp" onClick={(e) => {props.onClick(1, e)}} style={style}>
 				<span className="temp-number">
-					{parseFloat(props.temperature).toFixed(2)}
+					{parseFloat(temp).toFixed(2)}
 				</span>
 				<span className="temp-text">
-					&deg;C
+					&deg;{temp_unit}
 				</span>
 			</div>
 			<div className="humidity">
@@ -25,12 +47,12 @@ export function Reading(props) {
 					% Humidity
 				</span>
 			</div>
-			<div className="pressure">
+			<div className="pressure" onClick={(e) => {props.onClick(2, e)}} style={style}>
 				<span className="pressure-number">
-					{parseFloat(props.pressure).toFixed(0)}
+					{parseFloat(pressure).toFixed(2)}
 				</span>
 				<span className="pressure-text">
-					&nbsp;mbar
+					&nbsp;{pressure_unit}
 				</span>
 			</div>
 			<div className="reading-time">
@@ -51,7 +73,10 @@ export function Readings(props) {
 						temperature={elem.temperature}
 						humidity={elem.humidity}
 						pressure={elem.pressure}
-						date={d}>
+						date={d}
+						tempMetric={props.tempMetric}
+						pressureMetric={props.pressureMetric}
+						onClick={props.onClick}>
 					</Reading>
 				)
 			})}

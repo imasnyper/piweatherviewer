@@ -1,6 +1,9 @@
 from django.views import View
 from django.shortcuts import render
 from django.utils import timezone
+from django.template import RequestContext
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.conf import settings
 
 from viewer.models import Photo, Reading
 from viewer.serializers import PhotoSerializer, ReadingSerializer
@@ -39,21 +42,24 @@ class Home(View):
 		photo = Photo.objects.last()
 		if photo:
 			photo = {
-						'location': AWS_MEDIA_LOCATION + photo.photo.name,
+						'location': photo.photo.url,
 						'name': photo.photo.name,
 					}
 		current_timezone = timezone.get_current_timezone()
 		reading = prep_readings([Reading.objects.last()])[0]
 		props = {
 			'photos': [photo,],
-			'readings': reading,
+			'reading': reading,
 		}
+
+		debug = settings.DEBUG
 
 		context = {
 			'title': self.title,
 			'component': self.component,
 			'props': props,
 			's3_static': AWS_STATIC_LOCATION,
+			'debug': settings.DEBUG,
 		}
 
 		return render(request, self.template, context)
@@ -66,7 +72,7 @@ class History(View):
 	def get(self, request):
 		photos = Photo.objects.all()
 		photos = [{
-					'location': AWS_MEDIA_LOCATION + p.photo.name,
+					'location': p.photo.url,
 					'name': p.photo.name,
 				  }
 				  for p in photos]
@@ -82,6 +88,7 @@ class History(View):
 			'component': self.component,
 			'props': props,
 			's3_static': AWS_STATIC_LOCATION,
+			'debug': settings.DEBUG
 		}
 
 		return render(request, self.template, context)
