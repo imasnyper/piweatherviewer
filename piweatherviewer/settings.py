@@ -150,5 +150,8 @@ if not DEBUG:
     MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIA_ROOT)
 else:
     STATIC_URL = '/static/'
+    STATIC_ROOT = 'static'
+    MEDIA_ROOT = 'static/media'
+    MEDIA_URL = '/media/'
 
 # django_heroku.settings(locals())

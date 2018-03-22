@@ -3,11 +3,6 @@ import ReactDOM from 'react-dom';
 import { Reading } from '../components/readings';
 import { Photos } from '../components/photos';
 import moment from 'moment';
-import DatetimeSlider from 'react-datetime-slider';
-
-import 'react-datetime-slider/css/ReactDatetimeSlider.css';
-import 'rc-slider/assets/index.css';
-import 'rc-tooltip/assets/bootstrap.css';
 
 class Home extends Component {
 	constructor(props) {
@@ -39,11 +34,6 @@ class Home extends Component {
 					pressure={window.props.reading.pressure}
 					date={d}>
 				</Reading>
-				<DatetimeSlider
-					min={moment().subtract(1, 'hour').valueOf()}
-					max={moment().valueOf()}
-					onChange={console.log}
-				/>
 				<Photos photos={window.props.photos} width={this.state.width}/>
 			</div>
 		);
