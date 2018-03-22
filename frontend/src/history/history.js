@@ -9,16 +9,37 @@ class History extends Component {
 		this.state = { 
 			width: 0, 
 			height: 0,
-			metricUnits: true
+			metricUnits: true,
+			tempMetric: true,
+			pressureMetric: true,
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 	}
 
-	handleClick() {
-		this.setState({
-			metricUnits: !this.state.metricUnits,
-		})
+	handleClick(unit, e) {
+		// 1: temp
+		// 2: pressure
+		// 3: both
+		console.log(unit);
+		if (unit === 1){
+			this.setState({
+				tempMetric: !this.state.tempMetric,
+			});
+		} 
+		else if (unit === 2) {
+			this.setState({
+				pressureMetric: !this.state.pressureMetric,
+			});
+		}
+		else if (unit === 3) {
+			let mu = !this.state.metricUnits;
+			this.setState({
+				metricUnits: mu,
+				tempMetric: mu,
+				pressureMetric: mu,
+			});
+		}
 	}
 
 	componentDidMount() {
@@ -38,10 +59,12 @@ class History extends Component {
 		console.log(this.state.units);
 		return (
 			<div className='react-app'>
-				<button type="button" onClick={this.handleClick}>Toggle</button>
+				<button type="button" onClick={(e) => {this.handleClick(3, e)}}>Toggle</button>
 				<Readings 
 					readings={window.props.readings} 
-					units={this.state.metricUnits}
+					tempMetric={this.state.tempMetric}
+					pressureMetric={this.state.pressureMetric}
+					onClick={this.handleClick}
 				/>
 				<Photos photos={window.props.photos} width={this.state.width} />
 			</div>

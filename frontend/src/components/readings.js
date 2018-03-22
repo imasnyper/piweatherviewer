@@ -75,7 +75,8 @@ export function Readings(props) {
 						pressure={elem.pressure}
 						date={d}
 						tempMetric={props.tempMetric}
-						pressureMetric={props.pressureMetric}>
+						pressureMetric={props.pressureMetric}
+						onClick={props.onClick}>
 					</Reading>
 				)
 			})}
