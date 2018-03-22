@@ -6,8 +6,19 @@ import { Photos } from '../components/photos';
 class History extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { width: 0, height: 0 }
+		this.state = { 
+			width: 0, 
+			height: 0,
+			metricUnits: true
+		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleClick() {
+		this.setState({
+			metricUnits: !this.state.metricUnits,
+		})
 	}
 
 	componentDidMount() {
@@ -24,9 +35,14 @@ class History extends Component {
 	}
 
 	render() {
+		console.log(this.state.units);
 		return (
 			<div className='react-app'>
-				<Readings readings={window.props.readings} />
+				<button type="button" onClick={this.handleClick}>Toggle</button>
+				<Readings 
+					readings={window.props.readings} 
+					units={this.state.metricUnits}
+				/>
 				<Photos photos={window.props.photos} width={this.state.width} />
 			</div>
 		);
