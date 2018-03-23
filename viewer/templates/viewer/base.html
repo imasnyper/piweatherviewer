@@ -1,14 +1,21 @@
+{% load static %}
 {% load jsontag %}
 
 <head profile="http://www.w3.org/2005/10/profile">
 	<title>{% block page_title %}{{ title }}{% endblock page_title %}</title>
-	<link rel="stylesheet" href="{{ s3_static }}viewer/css/main.css"/>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<meta name="author" content="Daniel Hayes">
 	<meta name="description" content="website to view data recorded from a Raspberry Pi Weather Station">
 	<meta name="keywords" content="weather, pi, raspberry pi, python, javascript, react">
-	<link rel="icon" type="image/x-icon" href="{{ s3_static }}viewer/favicon.ico">
+	{% if debug %}
+		<script>console.log("debug on")</script>
+		<link rel="stylesheet" href="{% static 'viewer/css/main.css' %}"/>
+		<link rel="icon" type="image/x-icon" href="{% static 'viewer/favicon.ico' %}">
+	{% else %}
+		<link rel="stylesheet" href="{{ s3_static }}viewer/css/main.css"/>
+		<link rel="icon" type="image/x-icon" href="{{ s3_static }}viewer/favicon.ico">
+	{% endif %}
 </head>
 <body>
 	<div class="navbar">
@@ -32,5 +39,9 @@
 		window.props = {{props|json}}
 		window.react_mount = document.getElementById('react');
 	</script>
-	<script src="{{ s3_static }}viewer/js/{{ component }}"></script>
+	{% if debug %}
+		<script src="{% static 'viewer/js/'%}{{ component }}"></script>
+	{% else %}
+		<script src="{{ s3_static }}viewer/js/{{ component }}"></script>
+	{% endif %}
 </body>
