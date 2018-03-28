@@ -38,7 +38,7 @@ export class ReadingChart extends React.Component {
 	constructor (props) {
 		super(props);
 		this.state = {
-			data: props.data.slice()
+			data: props.data
 		};
 		this.formatXAxis = this.formatXAxis.bind(this);
 	}
