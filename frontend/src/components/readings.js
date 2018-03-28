@@ -13,27 +13,14 @@ export function Reading(props) {
 	const minute = ("00" + props.date.getMinutes()).slice(-2);
 	const second = ("00" + props.date.getSeconds()).slice(-2);
 
-	let temp, pressure, temp_unit, pressure_unit;
+	const temp_unit = props.tempMetric ? "C" : "F";
+	const pressure_unit = props.pressureMetric ? "mbar" : "inHg";
 
-	if(!props.tempMetric){
-		temp = props.temperature * 9 / 5 + 32;
-		temp_unit = 'F';
-	} else {
-		temp = props.temperature;
-		temp_unit = 'C';
-	}
-	if (!props.pressureMetric) {
-		pressure = props.pressure / 33.86388101478402;
-		pressure_unit = 'inHg';
-	} else {
-		pressure = props.pressure;
-		pressure_unit = 'mbar';
-	}
 	return (
 		<div className="reading">
 			<div className="temp" onClick={(e) => {props.onClick(1, e)}} style={style}>
 				<span className="temp-number">
-					{parseFloat(temp).toFixed(2)}
+					{parseFloat(props.temperature).toFixed(2)}
 				</span>
 				<span className="temp-text">
 					&deg;{temp_unit}
@@ -49,7 +36,7 @@ export function Reading(props) {
 			</div>
 			<div className="pressure" onClick={(e) => {props.onClick(2, e)}} style={style}>
 				<span className="pressure-number">
-					{parseFloat(pressure).toFixed(2)}
+					{parseFloat(props.pressure).toFixed(2)}
 				</span>
 				<span className="pressure-text">
 					&nbsp;{pressure_unit}
