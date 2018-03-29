@@ -93,9 +93,41 @@ class History(View):
 
 		return render(request, self.template, context)
 
+
+class Gallery(View):
+	title = "Wasa Wasa Weather"
+	template = 'viewer/base.html'
+	component = 'gallery.js'
+
+	def get(self, request):
+		photos = Photo.objects.all()
+		photos = [{
+					'location': p.photo.url,
+					'name': p.photo.name,
+				  }
+				  for p in photos]
+		current_timezone = timezone.get_current_timezone()
+		props = {
+			'photos': photos
+		}
+
+		debug = settings.DEBUG
+
+		context = {
+			'title': self.title,
+			'component': self.component,
+			'props': props,
+			's3_static': AWS_STATIC_LOCATION,
+			'debug': settings.DEBUG,
+		}
+
+		return render(request, self.template, context)
+
+
 class AddPhoto(generics.CreateAPIView):
 	queryset = Photo.objects.all()
 	serializer_class = PhotoSerializer
+
 
 class AddReading(generics.CreateAPIView):
 	queryset = Reading.objects.all()

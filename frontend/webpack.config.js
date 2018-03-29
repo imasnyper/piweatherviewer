@@ -4,6 +4,7 @@ module.exports = {
 	entry: {
 		'home.js': './src/home/home.js',
 		'history.js': './src/history/history.js',
+		'gallery.js': './src/gallery/gallery.js',
 	},
 	output: {
 		filename: '[name]',

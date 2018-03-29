@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Readings } from '../components/readings';
-import { Photos } from '../components/photos';
 import { ReadingChart } from '../components/readingChart';
 
 class History extends Component {
@@ -17,6 +16,7 @@ class History extends Component {
 			chartReadings: [],
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+		this.setView = this.setView.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.prepReadings = this.prepReadings.bind(this);
 		this.groupBy = this.groupBy.bind(this);
@@ -37,7 +37,7 @@ class History extends Component {
 			this.setState({
 				tempMetric: tempMetric,
 				readings: newReadings,
-				chartReadings: this.prepReadings(newReadings)
+				chartReadings: this.prepReadings(newReadings, this.state.view)
 			});
 		} 
 		// convert just pressure
@@ -48,7 +48,7 @@ class History extends Component {
 			this.setState({
 				pressureMetric: pressureMetric,
 				readings: newReadings,
-				chartReadings: this.prepReadings(newReadings),
+				chartReadings: this.prepReadings(newReadings, this.state.view),
 			});
 		}
 		// convert both temperature and pressure
@@ -60,7 +60,27 @@ class History extends Component {
 				tempMetric: tempMetric,
 				pressureMetric: pressureMetric,
 				readings: newReadings,
-				chartReadings: this.prepReadings(newReadings),
+				chartReadings: this.prepReadings(newReadings, this.state.view),
+			});
+		}
+	}
+
+	setView(view, e) {
+		if (view === "minutes") {
+			const view = "minutes";
+			this.setState({
+				view: view,
+				chartReadings: this.prepReadings(this.state.readings, view),
+			});
+		} else if (view === "hours") {
+			this.setState({
+				view: "hours",
+				chartReadings: this.prepReadings(this.state.readings, view),
+			});
+		} else if (view === "days") {
+			this.setState({
+				view: "days",
+				chartReadings: this.prepReadings(this.state.readings, view),
 			});
 		}
 	}
@@ -161,7 +181,7 @@ class History extends Component {
 		let readings = window.props.readings.slice();
 		this.setState({
 			readings: readings,
-			chartReadings: this.prepReadings(readings),
+			chartReadings: this.prepReadings(readings, this.state.view),
 		});
 	}
 
@@ -188,19 +208,19 @@ class History extends Component {
 		}, []);
 	}
 
-	prepReadings(readings) {
+	prepReadings(readings, view) {
 		let data = readings.map((reading) => {
 			const date = new Date(reading.date_string)
 			const y = date.getFullYear();
 			const m = date.getMonth();
 			const d = date.getDate();
 			let newDate;
-			if (this.state.view === "days") {
+			if (view === "days") {
 				newDate = new Date(y, m, d).valueOf();
-			} else if (this.state.view === "hours") {
+			} else if (view === "hours") {
 				const h = date.getHours();
 				newDate = new Date(y, m, d, h).valueOf();
-			} else if (this.state.view === "minutes") {
+			} else if (view === "minutes") {
 				const h = date.getHours();
 				const min = date.getMinutes();
 				newDate = new Date(y, m, d, h, min).valueOf();
@@ -243,18 +263,16 @@ class History extends Component {
 		return (
 			<div className='react-app'>
 				<button type="button" onClick={(e) => {this.handleClick(3, e)}}>Toggle</button>
+				<button type="button" onClick={(e) => {this.setView('minutes', e)}}>Minutes</button>
+				<button type="button" onClick={(e) => {this.setView('hours', e)}}>Hours</button>
+				<button type="button" onClick={(e) => {this.setView('days', e)}}>Days</button>
 				<ReadingChart 
 					data={this.state.chartReadings} 
 					tempMetric={this.state.tempMetric} 
 					pressureMetric={this.state.pressureMetric}
+					view={this.state.view}
+					width={this.state.width}
 				/>
-				<Readings 
-					readings={this.state.readings} 
-					tempMetric={this.state.tempMetric}
-					pressureMetric={this.state.pressureMetric}
-					onClick={this.handleClick}
-				/>
-				<Photos photos={window.props.photos} width={this.state.width} />
 			</div>
 		);
 	}
