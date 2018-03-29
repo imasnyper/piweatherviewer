@@ -10,7 +10,6 @@ class History extends Component {
 		this.state = { 
 			width: 0, 
 			height: 0,
-			metricUnits: true,
 			tempMetric: true,
 			pressureMetric: true,
 			view: "hours",
@@ -32,88 +31,60 @@ class History extends Component {
 		// 3: both
 		// convert just temp
 		if (unit === 1){
-			let newReadings = this.convertReadings(this.state.readings, 1)
+			const tempMetric = !this.state.tempMetric;
+			const pressureMetric = this.state.pressureMetric;
+			const newReadings = this.convertReadings(this.state.readings, 1, tempMetric, pressureMetric);
 			this.setState({
-				tempMetric: !this.state.tempMetric,
+				tempMetric: tempMetric,
 				readings: newReadings,
 				chartReadings: this.prepReadings(newReadings)
 			});
 		} 
 		// convert just pressure
 		else if (unit === 2) {
-			let newReadings = this.convertReadings(this.state.readings, 2)
+			const tempMetric = this.state.tempMetric;
+			const pressureMetric = !this.state.pressureMetric;
+			let newReadings = this.convertReadings(this.state.readings, 2, tempMetric, pressureMetric);
 			this.setState({
-				pressureMetric: !this.state.pressureMetric,
+				pressureMetric: pressureMetric,
 				readings: newReadings,
 				chartReadings: this.prepReadings(newReadings),
 			});
 		}
 		// convert both temperature and pressure
 		else if (unit === 3) {
-			if(this.state.tempMetric === this.state.pressureMetric) {
-				if(this.state.tempMetric === this.state.metricUnits) {
-					// temperature and pressure units are both equal to global units - swap everything
-					let newReadings = this.convertReadings(this.state.readings, 3)
-					this.setState({
-						metricUnits: !this.state.metricUnits,
-						tempMetric: !this.state.tempMetric,
-						pressureMetric: !this.state.pressureMetric,
-						readings: newReadings,
-						chartReadings: this.prepReadings(newReadings),
-					});
-				}
-				else {
-					let mu = !this.state.metricUnits
-					this.setState({
-						metricUnits: mu,
-						tempMetric: !this.state.tempMetric,
-						pressureMetric: !this.state.pressureMetric
-					});
-				}
-			} else {
-				let mu = !this.state.metricUnits;
-				this.setState({
-					metricUnits: mu,
-					tempMetric: mu,
-					pressureMetric: mu,
-				});
-			}
+			const tempMetric = !this.state.tempMetric;
+			const pressureMetric = !this.state.pressureMetric;
+			const newReadings = this.convertReadings(this.state.readings, 3, tempMetric, pressureMetric);
+			this.setState({
+				tempMetric: tempMetric,
+				pressureMetric: pressureMetric,
+				readings: newReadings,
+				chartReadings: this.prepReadings(newReadings),
+			});
 		}
 	}
 
-	componentDidMount() {
-		this.updateWindowDimensions();
-		window.addEventListener('resize', this.updateWindowDimensions);
-		let readings = window.props.readings.slice();
-		this.setState({
-			readings: readings,
-			chartReadings: this.prepReadings(readings),
-		});
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.updateWindowDimensions);
-	}
-
-	updateWindowDimensions() {
-		this.setState({ width: window.innerWidth, height: window.innerHeight})
-	}
-
-	convertReadings(readings, conversionType) {
-		if (conversionType === 3) {
-			if (this.state.tempMetric === this.state.pressureMetric) {
-				this.state.tempMetric ? readings = this.toStandard(readings, conversionType) : readings = this.toMetric(readings, conversionType);
-			} else {
-				this.state.tempMetric ? readings = this.toStandard(readings, 1) : readings = this.toMetric(readings, 1);
-				this.state.pressureMetric ? readings = this.toStandard(readings, 2) : readings = this.toMetric(readings, 2);
-			}
+	convertReadings(readings, conversionType, tempMetric, pressureMetric) {
+		let convertedReadings;
+		if (conversionType === 1) {
+			tempMetric ? 
+				convertedReadings = this.toMetric(readings, conversionType) : 
+				convertedReadings = this.toStandard(readings, conversionType);
 		} else if (conversionType === 2) {
-			this.state.pressureMetric ? readings = this.toStandard(readings, 2) : readings = this.toMetric(readings, 2);
+			pressureMetric ? 
+				convertedReadings = this.toMetric(readings, conversionType) :
+				convertedReadings = this.toStandard(readings, conversionType);
 		} else {
-			this.state.tempMetric ? readings = this.toStandard(readings, 1) : readings = this.toMetric(readings, 1);
+			tempMetric ? 
+				convertedReadings = this.toMetric(readings, 1) : 
+				convertedReadings = this.toStandard(readings, 1);
+			pressureMetric ? 
+				convertedReadings = this.toMetric(convertedReadings, 2) :
+				convertedReadings = this.toStandard(convertedReadings, 2);
 		}
 
-		return readings
+		return convertedReadings;
 	}
 
 	toStandard(readings, conversionType) {
@@ -184,6 +155,24 @@ class History extends Component {
 		return readings
 	}
 
+	componentDidMount() {
+		this.updateWindowDimensions();
+		window.addEventListener('resize', this.updateWindowDimensions);
+		let readings = window.props.readings.slice();
+		this.setState({
+			readings: readings,
+			chartReadings: this.prepReadings(readings),
+		});
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+
+	updateWindowDimensions() {
+		this.setState({ width: window.innerWidth, height: window.innerHeight})
+	}	
+
 	groupBy(xs, key) {
 		return xs.reduce((rv, x) => {
 			let v = key instanceof Function ? 
@@ -205,8 +194,17 @@ class History extends Component {
 			const y = date.getFullYear();
 			const m = date.getMonth();
 			const d = date.getDate();
-			const h = date.getHours();
-			const newDate = new Date(y, m, d, h).valueOf();
+			let newDate;
+			if (this.state.view === "days") {
+				newDate = new Date(y, m, d).valueOf();
+			} else if (this.state.view === "hours") {
+				const h = date.getHours();
+				newDate = new Date(y, m, d, h).valueOf();
+			} else if (this.state.view === "minutes") {
+				const h = date.getHours();
+				const min = date.getMinutes();
+				newDate = new Date(y, m, d, h, min).valueOf();
+			}
 			return {
 				date_time: newDate,
 				temperature: reading.temperature,
@@ -217,11 +215,11 @@ class History extends Component {
 
 		data = data.reverse();
 		data = this.groupBy(data, 'date_time');
-		data = data.map((hour) => {
+		data = data.map((date_time) => {
 			let temps = [];
 			let humidities = [];
 			let pressures = [];
-			Object.values(hour)[1].forEach((reading) => {
+			Object.values(date_time)[1].forEach((reading) => {
 				temps.push(reading.temperature);
 				humidities.push(reading.humidity);
 				pressures.push(reading.pressure)
@@ -233,7 +231,7 @@ class History extends Component {
 			let humidityAvg = humiditySum / humidities.length;
 			let pressureAvg = pressureSum / pressures.length;
 
-			return { date_time: Object.values(hour)[0], temperature: tempAvg, humidity: humidityAvg, pressure: pressureAvg }
+			return { date_time: Object.values(date_time)[0], temperature: tempAvg, humidity: humidityAvg, pressure: pressureAvg }
 		});		
 
 		return data;
@@ -245,7 +243,11 @@ class History extends Component {
 		return (
 			<div className='react-app'>
 				<button type="button" onClick={(e) => {this.handleClick(3, e)}}>Toggle</button>
-				<ReadingChart data={this.state.chartReadings} />
+				<ReadingChart 
+					data={this.state.chartReadings} 
+					tempMetric={this.state.tempMetric} 
+					pressureMetric={this.state.pressureMetric}
+				/>
 				<Readings 
 					readings={this.state.readings} 
 					tempMetric={this.state.tempMetric}
