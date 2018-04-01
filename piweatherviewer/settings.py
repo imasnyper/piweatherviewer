@@ -23,14 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!7$=ny0zxjp8a)gkb!b4-+&8mdn7m7kf#_cz1zk%xejmo8k6i9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
-    import django_heroku
-    ALLOWED_HOSTS = ["cottagevane.herokuapp.com", "www.cottagevane.herokuapp.com",
-                 "wasaweather.com", "www.wasaweather.com"]
+    ALLOWED_HOSTS = ["140.82.60.64"]
 
 
 
@@ -155,8 +153,6 @@ if not DEBUG:
     MEDIA_ROOT = 'media'
 
     MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIA_ROOT)
-
-    django_heroku.settings(locals())
 
 else:
     STATIC_URL = '/static/'
