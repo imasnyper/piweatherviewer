@@ -28,7 +28,7 @@ DEBUG = False
 if DEBUG:
     ALLOWED_HOSTS = ["140.82.60.64"]
 else:
-    ALLOWED_HOSTS = ["140.82.60.64"]
+    ALLOWED_HOSTS = ["140.82.60.64, wasaweather.com, www.wasaweather.com"]
 
 
 
