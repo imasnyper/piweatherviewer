@@ -20,6 +20,7 @@ class Home extends Component {
 			humidity: window.props.reading.humidity,
 			pressure: window.props.reading.pressure,
 			date_string: window.props.reading.date_string,
+			hasError: false,
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.handleClick = this.handleClick.bind(this);
@@ -108,6 +109,12 @@ class Home extends Component {
 		return newReading;
 	}
 
+	componentDidCatch(error, info) {
+		this.setState({
+			hasError: true,
+		});
+	}
+
 	componentDidMount() {
 		this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
@@ -123,6 +130,9 @@ class Home extends Component {
 
 	render() {
 		const d = new Date(window.props.reading.date_string);
+		if (this.state.hasError) {
+			return <h1>Something Went Wrong</h1>
+		}
 		return (
 			<div className='react-app'>
 				<Reading

@@ -14,23 +14,25 @@ class CustomTooltip extends React.Component {
 		const pressure_unit = this.props.pressureMetric ? "mbar" : "inHg";
 		let labelText;
 		if (active) {
-		  const { payload, label } = this.props;
-		  const momentObj = moment(label);
-		  if ( this.props.myView === "minutes" ) {
-		  	labelText = "Date: " + momentObj.format("M/D/YY h:mma");
-		  } else if ( this.props.myView === "hours" ) {
-		  	labelText = "Date: " + momentObj.format("M/D/YY ha");
-		  } else if ( this.props.myView === "days" ) {
-		  	labelText = "Date: " + momentObj.format("M/D/YY");
-		  }
-		  return (
-		    <div className="custom-tooltip">
-		      <p className="label">{labelText}</p>
-		      <p style={{color: payload[0].stroke}}className="label">{`Temperature: ${payload[0].value.toFixed(2)}`}&deg;{temp_unit}</p>
-		      <p style={{color: payload[1].stroke}}className="label">{`Humidity: ${payload[1].value.toFixed(0)}%`}</p>
-		      <p style={{color: payload[2].stroke}}className="label">{`Pressure: ${payload[2].value.toFixed(0)} `}{pressure_unit}</p>
-		    </div>
-		  );
+			const { payload, label } = this.props;
+			const momentObj = moment(label);
+			if ( this.props.myView === "minutes" ) {
+				labelText = "Date: " + momentObj.format("M/D/YY h:mma");
+			} else if ( this.props.myView === "hours" ) {
+				labelText = "Date: " + momentObj.format("M/D/YY ha");
+			} else if ( this.props.myView === "days" ) {
+				labelText = "Date: " + momentObj.format("M/D/YY");
+			}
+			if (payload) {
+				return (
+					<div className="custom-tooltip">
+					<p className="label">{labelText}</p>
+					<p style={{color: payload[0].stroke}}className="label">{`Temperature: ${payload[0].value.toFixed(2)}`}&deg;{temp_unit}</p>
+					<p style={{color: payload[1].stroke}}className="label">{`Humidity: ${payload[1].value.toFixed(0)}%`}</p>
+					<p style={{color: payload[2].stroke}}className="label">{`Pressure: ${payload[2].value.toFixed(0)} `}{pressure_unit}</p>
+					</div>
+				);
+			}
 		}
 
 	    return null;
