@@ -48,7 +48,14 @@ class Home(View):
 		current_timezone = timezone.get_current_timezone()
 		reading = Reading.objects.last()
 		if reading:
-			reading = prep_readings(reading)[0]
+			reading = prep_readings([reading])[0]
+		else:
+			reading = {
+				"temperature": None,
+				"humidity": None,
+				"pressure": None,
+				"date_sting": None,
+			}
 		props = {
 			'photos': [photo,],
 			'reading': reading,
