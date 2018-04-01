@@ -26,7 +26,7 @@ SECRET_KEY = '!7$=ny0zxjp8a)gkb!b4-+&8mdn7m7kf#_cz1zk%xejmo8k6i9'
 DEBUG = False
 
 if DEBUG:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ["140.82.60.64"]
 else:
     ALLOWED_HOSTS = ["140.82.60.64"]
 
@@ -89,8 +89,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'wasaweather',
         'USER': 'daniel',
-        'PASSWORD': os.environ.get("WASA_WEATHER_DB_PASS"),
-        'HOST': 'localhost',
+        'PASSWORD': os.environ.get("WASA_WEATHER_DB_PASS", ""),
+        'HOST': '',
         'PORT': '',
     }
 }
