@@ -109,7 +109,7 @@ class Gallery(View):
 	component = 'gallery.js'
 
 	def get(self, request):
-		photos = Photo.objects.all()
+		photos = Photo.objects.order_by("-uploaded_at")
 		photos = [{
 					'location': p.photo.url,
 					'name': p.photo.name,
