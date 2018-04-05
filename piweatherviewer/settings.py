@@ -26,9 +26,9 @@ SECRET_KEY = '!7$=ny0zxjp8a)gkb!b4-+&8mdn7m7kf#_cz1zk%xejmo8k6i9'
 DEBUG = False
 
 if DEBUG:
-    ALLOWED_HOSTS = ["140.82.60.64"]
+    ALLOWED_HOSTS = ["140.82.60.64", "wasaweather.com", "www.wasaweather.com"]
 else:
-    ALLOWED_HOSTS = ["140.82.60.64, wasaweather.com, www.wasaweather.com"]
+    ALLOWED_HOSTS = ["140.82.60.64", "wasaweather.com", "www.wasaweather.com"]
 
 
 
@@ -134,7 +134,7 @@ USE_TZ = True
 
 if not DEBUG:
     AWS_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY_ID", "")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY", "")    
+    AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY", "")
 
     AWS_STORAGE_BUCKET_NAME = 'piweatherstation'
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
