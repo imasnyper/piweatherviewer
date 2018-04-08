@@ -76,17 +76,23 @@ class History extends Component {
 
 	handleChangeStart(date) {
 		const d = date;
+		console.log("d:");
+		console.log(d)
 		this.setState({
 			startDate: d,
-			readings: this.limitReadings(this.state.readings, d)
+			chartReadings: this.prepReadings(
+				this.limitReadings(this.state.readings, d.valueOf()), this.state.view)
 		});
 	}
 
 	handleChangeEnd(date) {
 		const d = date;
+		console.log("d:");
+		console.log(d)
 		this.setState({
 			endDate: d,
-			readings: this.limitReadings(this.state.readings, d)
+			chartReadings: this.prepReadings(
+				this.limitReadings(this.state.readings, undefined, d.valueOf()), this.state.view)
 		});
 	}
 
@@ -201,22 +207,38 @@ class History extends Component {
 	}
 
 	limitReadings(readings, startDate, endDate) {
+		let sD, eD;
 		if (startDate === undefined) {
-			const startDate = this.state.startDate;
+			sD = moment(this.state.startDate);
+		} else {
+			sD = moment(startDate);
 		}
 		if (endDate === undefined) {
-			const endDate = this.state.endDate;
+			eD = moment(this.state.endDate);
+		} else {
+			eD = moment(endDate);
 		}
 
-		const newReadings = []
+		// console.log("sD: ");
+		// console.log(sD.format());
+		// console.log("eD: ");
+		// console.log(eD.format());
+		// console.log("state readings:");
+		// console.log(this.state.readings);
+		// console.log("state chartReadings:")
+		// console.log(this.state.chartReadings);
+		// console.log("readings: ");
+		// console.log(readings);
+
+		let newReadings = [];
 		readings.forEach(reading => {
 			let d = moment(reading.date_string);
-			if ( d > startDate && d < endDate ) {
-				newReadings.push(reading)
+			if ( d > sD && d < eD ) {
+				newReadings.push(reading);
 			}
 		});
 
-		return readings
+		return newReadings
 	}
 
 	componentDidMount() {
@@ -224,8 +246,8 @@ class History extends Component {
 		window.addEventListener('resize', this.updateWindowDimensions);
 		let readings = window.props.readings.slice();
 		this.setState({
-			readings: this.limitReadings(readings),
-			chartReadings: this.prepReadings(readings, this.state.view),
+			readings: readings,
+			chartReadings: this.prepReadings(this.limitReadings(readings), this.state.view),
 		});
 	}
 
@@ -254,6 +276,7 @@ class History extends Component {
 
 	prepReadings(readings, view) {
 		let data = readings.map((reading) => {
+			console.log(reading.date_string);
 			const date = new Date(reading.date_string)
 			const y = date.getFullYear();
 			const m = date.getMonth();
@@ -302,8 +325,9 @@ class History extends Component {
 	}
 
 	render() {
-		const updatedReadings = this.state.chartReadings.slice();
-		const tempData = [{date_time: new Date().valueOf(), temperature: 23, humidity: 68, pressure: 1018}]
+		// const updatedReadings = this.state.chartReadings.slice();
+		// const tempData = [{date_time: new Date().valueOf(), temperature: 23, humidity: 68, pressure: 1018}]
+		console.log(this.state.chartReadings);
 		return (
 			<div className='react-app'>
 				<button type="button" onClick={(e) => {this.handleClick(3, e)}}>Toggle</button>
@@ -325,6 +349,7 @@ class History extends Component {
 		          endDate={this.state.endDate}
 		          onChange={this.handleChangeEnd}
 		        />
+
 				<ReadingChart 
 					data={this.state.chartReadings} 
 					tempMetric={this.state.tempMetric} 

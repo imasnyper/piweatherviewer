@@ -1,60 +1,62 @@
 {% load static %}
 {% load jsontag %}
-
-<head profile="http://www.w3.org/2005/10/profile">
-	<title>{% block page_title %}{{ title }}{% endblock page_title %}</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<meta name="author" content="Daniel Hayes">
-	<meta name="description" content="website to view data recorded from a Raspberry Pi Weather Station">
-	<meta name="keywords" content="weather, pi, raspberry pi, python, javascript, react">
-	{% if debug %}
-		<script>console.log("debug on")</script>
-		<link rel="stylesheet" href="{% static 'viewer/css/main.css' %}"/>
-		<link rel="stylesheet" href="{% static 'viewer/css/react-datepicker.css' %}"/>
-		<link rel="stylesheet" href="{% static 'viewer/css/react-gallery.css' %}"/>
-		<link rel="icon" type="image/x-icon" href="{% static 'viewer/favicon.ico' %}">
-	{% else %}
-		<link rel="stylesheet" href="{{ s3_static }}viewer/css/main.css"/>
-		<link rel="stylesheet" href="{{ s3_static }}viewer/css/react-datepicker.css"/>
-		<link rel="stylesheet" href="{{ s3_static }}viewer/css/react-gallery.css"/>
-		<link rel="icon" type="image/x-icon" href="{{ s3_static }}viewer/favicon.ico">
-	{% endif %}
-</head>
-<body>
-	<div class="navbar">
-		<h1>{{ title }}</h1>
-		<div class="nav-items">
-			<div class="nav-item home">
-				<a href="{% url 'viewer:home' %}">Home</a>
-			</div>
-			<div class="nav-item">
-				&nbsp;|&nbsp;
-			</div>
-			<div class="nav-item history">
-				<a href="{% url 'viewer:history' %}">History</a>
-			</div>
-			<div class="nav-item">
-				&nbsp;|&nbsp;
-			</div>
-			<div class="nav-item history">
-				<a href="{% url 'viewer:gallery' %}">Gallery</a>
+<!DOCTYPE html>
+<html>
+	<head profile="http://www.w3.org/2005/10/profile">
+		<title>{% block page_title %}{{ title }}{% endblock page_title %}</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="author" content="Daniel Hayes">
+		<meta name="description" content="website to view data recorded from a Raspberry Pi Weather Station">
+		<meta name="keywords" content="weather, pi, raspberry pi, python, javascript, react">
+		{% if debug %}
+			<script>console.log("debug on")</script>
+			<link rel="stylesheet" href="{% static 'viewer/css/main.css' %}"/>
+			<link rel="stylesheet" href="{% static 'viewer/css/react-datepicker.css' %}"/>
+			<link rel="stylesheet" href="{% static 'viewer/css/react-gallery.css' %}"/>
+			<link rel="icon" type="image/x-icon" href="{% static 'viewer/favicon.ico' %}">
+		{% else %}
+			<link rel="stylesheet" href="{{ s3_static }}viewer/css/main.css"/>
+			<link rel="stylesheet" href="{{ s3_static }}viewer/css/react-datepicker.css"/>
+			<link rel="stylesheet" href="{{ s3_static }}viewer/css/react-gallery.css"/>
+			<link rel="icon" type="image/x-icon" href="{{ s3_static }}viewer/favicon.ico">
+		{% endif %}
+	</head>
+	<body>
+		<div class="navbar">
+			<h1>{{ title }}</h1>
+			<div class="nav-items">
+				<div class="nav-item home">
+					<a href="{% url 'viewer:home' %}">Home</a>
+				</div>
+				<div class="nav-item">
+					&nbsp;|&nbsp;
+				</div>
+				<div class="nav-item history">
+					<a href="{% url 'viewer:history' %}">History</a>
+				</div>
+				<div class="nav-item">
+					&nbsp;|&nbsp;
+				</div>
+				<div class="nav-item history">
+					<a href="{% url 'viewer:gallery' %}">Gallery</a>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div id="react">
-		<div class="info">
-			Loading Components...
+		<div id="react">
+			<div class="info">
+				Loading Components...
+			</div>
 		</div>
-	</div>
 
-	<script>
-		window.props = {{props|json}}
-		window.react_mount = document.getElementById('react');
-	</script>
-	{% if debug %}
-		<script src="{% static 'viewer/js/'%}{{ component }}"></script>
-	{% else %}
-		<script src="{{ s3_static }}viewer/js/{{ component }}"></script>
-	{% endif %}
-</body>
+		<script>
+			window.props = {{props|json}}
+			window.react_mount = document.getElementById('react');
+		</script>
+		{% if debug %}
+			<script src="{% static 'viewer/js/'%}{{ component }}"></script>
+		{% else %}
+			<script src="{{ s3_static }}viewer/js/{{ component }}"></script>
+		{% endif %}
+	</body>
+</html>
