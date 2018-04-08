@@ -26,7 +26,7 @@ SECRET_KEY = '!7$=ny0zxjp8a)gkb!b4-+&8mdn7m7kf#_cz1zk%xejmo8k6i9'
 DEBUG = False
 
 if DEBUG:
-    ALLOWED_HOSTS = ["140.82.60.64", "wasaweather.com", "www.wasaweather.com"]
+    ALLOWED_HOSTS = ["140.82.60.64", "wasaweather.com", "www.wasaweather.com", "*", "localhost", "127.0.0.1", ""]
 else:
     ALLOWED_HOSTS = ["140.82.60.64", "wasaweather.com", "www.wasaweather.com"]
 
@@ -133,8 +133,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 if not DEBUG:
-    AWS_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY_ID", "")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY", "")
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "")
+
+    # AWS Acess Key ID and secret access key are also stored in ~/.aws/credentials
+    # for photo uploads to work. see stack overflow post here: https://goo.gl/9k2ssf
 
     AWS_STORAGE_BUCKET_NAME = 'piweatherstation'
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME

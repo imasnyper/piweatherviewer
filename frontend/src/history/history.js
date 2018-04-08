@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Readings } from '../components/readings';
 import { ReadingChart } from '../components/readingChart';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 class History extends Component {
 	constructor(props) {
@@ -14,6 +18,8 @@ class History extends Component {
 			view: "hours",
 			readings: [],
 			chartReadings: [],
+			startDate: moment().subtract(7, "days"),
+			endDate: moment(),
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.setView = this.setView.bind(this);
@@ -23,6 +29,9 @@ class History extends Component {
 		this.convertReadings = this.convertReadings.bind(this);
 		this.toStandard = this.toStandard.bind(this);
 		this.toMetric = this.toMetric.bind(this);
+		this.handleChangeStart = this.handleChangeStart.bind(this);
+		this.handleChangeEnd = this.handleChangeEnd.bind(this);
+		this.limitReadings = this.limitReadings.bind(this);
 	}
 
 	handleClick(unit, e) {
@@ -63,6 +72,22 @@ class History extends Component {
 				chartReadings: this.prepReadings(newReadings, this.state.view),
 			});
 		}
+	}
+
+	handleChangeStart(date) {
+		const d = date;
+		this.setState({
+			startDate: d,
+			readings: this.limitReadings(this.state.readings, d)
+		});
+	}
+
+	handleChangeEnd(date) {
+		const d = date;
+		this.setState({
+			endDate: d,
+			readings: this.limitReadings(this.state.readings, d)
+		});
 	}
 
 	setView(view, e) {
@@ -175,12 +200,31 @@ class History extends Component {
 		return readings
 	}
 
+	limitReadings(readings, startDate, endDate) {
+		if (startDate === undefined) {
+			const startDate = this.state.startDate;
+		}
+		if (endDate === undefined) {
+			const endDate = this.state.endDate;
+		}
+
+		const newReadings = []
+		readings.forEach(reading => {
+			let d = moment(reading.date_string);
+			if ( d > startDate && d < endDate ) {
+				newReadings.push(reading)
+			}
+		});
+
+		return readings
+	}
+
 	componentDidMount() {
 		this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
 		let readings = window.props.readings.slice();
 		this.setState({
-			readings: readings,
+			readings: this.limitReadings(readings),
 			chartReadings: this.prepReadings(readings, this.state.view),
 		});
 	}
@@ -266,6 +310,21 @@ class History extends Component {
 				<button type="button" onClick={(e) => {this.setView('minutes', e)}}>Minutes</button>
 				<button type="button" onClick={(e) => {this.setView('hours', e)}}>Hours</button>
 				<button type="button" onClick={(e) => {this.setView('days', e)}}>Days</button>
+				<DatePicker
+		          selected={this.state.startDate}
+		          selectsStart
+		          startDate={this.state.startDate}
+		          endDate={this.state.endDate}
+		          onChange={this.handleChangeStart}
+		        />
+
+		        <DatePicker
+		          selected={this.state.endDate}
+		          selectsEnd
+		          startDate={this.state.startDate}
+		          endDate={this.state.endDate}
+		          onChange={this.handleChangeEnd}
+		        />
 				<ReadingChart 
 					data={this.state.chartReadings} 
 					tempMetric={this.state.tempMetric} 
