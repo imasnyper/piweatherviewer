@@ -89,7 +89,7 @@ class Gallery extends Component {
 		const newPhotos = photos.map((elem, i) => {
 			return {
 				original: elem.location,
-				thumbnail: elem.location,
+				thumbnail: elem.thumbnail !== "" ? elem.thumbnail : elem.location,
 			}
 		});
 
