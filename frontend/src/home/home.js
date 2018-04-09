@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Reading } from '../components/readings';
 import moment from 'moment';
-import Photos from '../components/photos';
+import { Photos } from '../components/photos';
 
 function Toggle(props) {
 	return 
 }
 
-class Home extends Component {
+export default class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { 
@@ -110,6 +110,7 @@ class Home extends Component {
 	}
 
 	componentDidCatch(error, info) {
+		console.log(info);
 		this.setState({
 			hasError: true,
 		});
@@ -130,6 +131,9 @@ class Home extends Component {
 
 	render() {
 		const d = new Date(window.props.reading.date_string);
+		console.log(d);
+		console.log(window.props.photos);
+		console.log(this.state.width);
 		if (this.state.hasError) {
 			return <h1>Something Went Wrong</h1>
 		}

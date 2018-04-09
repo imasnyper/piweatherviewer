@@ -42,7 +42,8 @@ class History extends Component {
 		if (unit === 1){
 			const tempMetric = !this.state.tempMetric;
 			const pressureMetric = this.state.pressureMetric;
-			const newReadings = this.convertReadings(this.state.readings, 1, tempMetric, pressureMetric);
+			const newReadings = this.convertReadings(
+				this.limitReadings(this.state.readings), 1, tempMetric, pressureMetric);
 			this.setState({
 				tempMetric: tempMetric,
 				readings: newReadings,
@@ -53,7 +54,8 @@ class History extends Component {
 		else if (unit === 2) {
 			const tempMetric = this.state.tempMetric;
 			const pressureMetric = !this.state.pressureMetric;
-			let newReadings = this.convertReadings(this.state.readings, 2, tempMetric, pressureMetric);
+			let newReadings = this.convertReadings(
+				this.limitReadings(this.state.readings), 2, tempMetric, pressureMetric);
 			this.setState({
 				pressureMetric: pressureMetric,
 				readings: newReadings,
@@ -64,7 +66,8 @@ class History extends Component {
 		else if (unit === 3) {
 			const tempMetric = !this.state.tempMetric;
 			const pressureMetric = !this.state.pressureMetric;
-			const newReadings = this.convertReadings(this.state.readings, 3, tempMetric, pressureMetric);
+			const newReadings = this.convertReadings(
+				this.limitReadings(this.state.readings), 3, tempMetric, pressureMetric);
 			this.setState({
 				tempMetric: tempMetric,
 				pressureMetric: pressureMetric,

@@ -41,6 +41,7 @@ def prep_photos(photos):
 		photo_dict = {
 				'location': photo.photo.url,
 				'name': photo.photo.name,
+				'thumbnail': photo.thumbnail.url,
 				'date_string': date_string,
 			  }
 		photos_prop.append(photo_dict)
