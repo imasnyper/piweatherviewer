@@ -30,3 +30,5 @@ piweatherviewer/credentials.zip
 **/migrations/*
 .env
 static/
+
+project-counted-lines.txt

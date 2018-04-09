@@ -76,8 +76,6 @@ class Home(View):
 			'reading': reading,
 		}
 
-		debug = settings.DEBUG
-
 		context = {
 			'title': self.title,
 			'component': self.component,
@@ -130,8 +128,6 @@ class Gallery(View):
 		props = {
 			'photos': photos
 		}
-
-		debug = settings.DEBUG
 
 		context = {
 			'title': self.title,

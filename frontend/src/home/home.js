@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Reading } from '../components/readings';
 import moment from 'moment';
+import Photos from '../components/photos';
 
 function Toggle(props) {
 	return 

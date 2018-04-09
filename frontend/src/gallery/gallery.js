@@ -13,7 +13,7 @@ class Gallery extends Component {
 			height: 0,
 			photos: [],
 			galleryPhotos: [],
-			startDate: moment().subtract(7, "days"),
+			startDate: moment().subtract(24, "hours"),
 			endDate: moment(),
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -30,6 +30,7 @@ class Gallery extends Component {
 			chartReadings: this.prepPhotos(
 				this.limitPhotos(this.state.photos, d.valueOf()), undefined)
 		});
+		console.log(d);
 	}
 
 	handleChangeEnd(date) {
@@ -39,6 +40,7 @@ class Gallery extends Component {
 			galleryPhotos: this.prepPhotos(
 				this.limitPhotos(this.state.photos, undefined, d.valueOf()))
 		});
+		console.log(d);
 	}
 
 	limitPhotos(photos, startDate, endDate) {
@@ -54,19 +56,13 @@ class Gallery extends Component {
 			eD = moment(endDate);
 		}
 
-		console.log(sD);
-		console.log(eD);
-
 		let newPhotos = [];
 		photos.forEach(photo => {
 			let d = moment(photo.date_string);
-			console.log(d)
 			if ( d > sD && d < eD ) {
 				newPhotos.push(photo);
 			}
 		});
-
-		console.log(newPhotos);
 
 		return newPhotos;
 	}
@@ -101,7 +97,6 @@ class Gallery extends Component {
 	}
 
 	render() {
-		console.log(this.state.galleryPhotos);
 		return (
 			<div>
 				<ImageGallery items={this.state.galleryPhotos} />
