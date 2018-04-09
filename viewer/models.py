@@ -59,7 +59,7 @@ class Photo(models.Model):
 		# Save image to a SimpleUploadedFile which can be saved into
 		# ImageField
 		suf = SimpleUploadedFile(os.path.split(self.photo.name)[-1],
-			temp_handle.read(), content_type=DJANGO_TYPE)
+			temp_handle.read(), content_type='image/jpeg')
 		# Save SimpleUploadedFile into image field
 		self.thumbnail.save('%s_thumbnail.%s'%(os.path.splitext(suf.name)[0],FILE_EXTENSION), suf, save=False)
 
