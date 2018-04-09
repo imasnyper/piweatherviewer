@@ -32,6 +32,21 @@ def prep_readings(readings):
 
 	return readings_prop
 
+def prep_photos(photos):
+	current_timezone = timezone.get_current_timezone()
+	photos_prop = []
+	for photo in photos:
+		normalized = current_timezone.normalize(photo.uploaded_at.astimezone(current_timezone))
+		date_string = normalized.strftime("%Y-%m-%dT%H:%M:%S")
+		photo_dict = {
+				'location': photo.photo.url,
+				'name': photo.photo.name,
+				'date_string': date_string,
+			  }
+		photos_prop.append(photo_dict)
+
+	return photos_prop
+
 # Create your views here.
 class Home(View):
 	title = "Wasa Wasa Weather"
@@ -110,11 +125,7 @@ class Gallery(View):
 
 	def get(self, request):
 		photos = Photo.objects.order_by("-uploaded_at")
-		photos = [{
-					'location': p.photo.url,
-					'name': p.photo.name,
-				  }
-				  for p in photos]
+		photos = prep_photos(photos)
 		current_timezone = timezone.get_current_timezone()
 		props = {
 			'photos': photos

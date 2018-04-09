@@ -76,8 +76,6 @@ class History extends Component {
 
 	handleChangeStart(date) {
 		const d = date;
-		console.log("d:");
-		console.log(d)
 		this.setState({
 			startDate: d,
 			chartReadings: this.prepReadings(
@@ -87,8 +85,6 @@ class History extends Component {
 
 	handleChangeEnd(date) {
 		const d = date;
-		console.log("d:");
-		console.log(d)
 		this.setState({
 			endDate: d,
 			chartReadings: this.prepReadings(
@@ -101,17 +97,20 @@ class History extends Component {
 			const view = "minutes";
 			this.setState({
 				view: view,
-				chartReadings: this.prepReadings(this.state.readings, view),
+				chartReadings: this.prepReadings(
+					this.limitReadings(this.state.readings), view),
 			});
 		} else if (view === "hours") {
 			this.setState({
 				view: "hours",
-				chartReadings: this.prepReadings(this.state.readings, view),
+				chartReadings: this.prepReadings(
+					this.limitReadings(this.state.readings), view),
 			});
 		} else if (view === "days") {
 			this.setState({
 				view: "days",
-				chartReadings: this.prepReadings(this.state.readings, view),
+				chartReadings: this.prepReadings(
+					this.limitReadings(this.state.readings), view),
 			});
 		}
 	}
@@ -219,17 +218,6 @@ class History extends Component {
 			eD = moment(endDate);
 		}
 
-		// console.log("sD: ");
-		// console.log(sD.format());
-		// console.log("eD: ");
-		// console.log(eD.format());
-		// console.log("state readings:");
-		// console.log(this.state.readings);
-		// console.log("state chartReadings:")
-		// console.log(this.state.chartReadings);
-		// console.log("readings: ");
-		// console.log(readings);
-
 		let newReadings = [];
 		readings.forEach(reading => {
 			let d = moment(reading.date_string);
@@ -276,7 +264,6 @@ class History extends Component {
 
 	prepReadings(readings, view) {
 		let data = readings.map((reading) => {
-			console.log(reading.date_string);
 			const date = new Date(reading.date_string)
 			const y = date.getFullYear();
 			const m = date.getMonth();
@@ -327,36 +314,64 @@ class History extends Component {
 	render() {
 		// const updatedReadings = this.state.chartReadings.slice();
 		// const tempData = [{date_time: new Date().valueOf(), temperature: 23, humidity: 68, pressure: 1018}]
-		console.log(this.state.chartReadings);
 		return (
 			<div className='react-app'>
-				<button type="button" onClick={(e) => {this.handleClick(3, e)}}>Toggle</button>
-				<button type="button" onClick={(e) => {this.setView('minutes', e)}}>Minutes</button>
-				<button type="button" onClick={(e) => {this.setView('hours', e)}}>Hours</button>
-				<button type="button" onClick={(e) => {this.setView('days', e)}}>Days</button>
-				<DatePicker
-		          selected={this.state.startDate}
-		          selectsStart
-		          startDate={this.state.startDate}
-		          endDate={this.state.endDate}
-		          onChange={this.handleChangeStart}
-		        />
-
-		        <DatePicker
-		          selected={this.state.endDate}
-		          selectsEnd
-		          startDate={this.state.startDate}
-		          endDate={this.state.endDate}
-		          onChange={this.handleChangeEnd}
-		        />
-
+				<div className="chart-controls">
+					<span className="toggle-units" onClick={(e) => {this.handleClick(3, e)}}>Toggle Units</span>
+					<span className={this.state.view === "days" ? "chart-view chart-view-days chart-view-active" : "chart-view chart-view-days"} onClick={(e) => {this.setView('days', e)}}>Days</span>
+					<span className={this.state.view === "hours" ? "chart-view chart-view-hours chart-view-active" : "chart-view chart-view-hours"} onClick={(e) => {this.setView('hours', e)}}>Hours</span>
+					<span className={this.state.view === "minutes" ? "chart-view chart-view-minutes chart-view-active" : "chart-view chart-view-minutes"} onClick={(e) => {this.setView('minutes', e)}}>Minutes</span>
+					
+				</div>
 				<ReadingChart 
 					data={this.state.chartReadings} 
 					tempMetric={this.state.tempMetric} 
 					pressureMetric={this.state.pressureMetric}
 					view={this.state.view}
 					width={this.state.width}
+					clicks={this.handleClick}
 				/>
+				<div className="date-selection">
+					<table align="center">
+						<caption>Select a start and end date to limit the chart</caption>
+						<thead>
+							<tr>
+								<th>
+									Select start date
+								</th>
+								<th>
+									Select end date
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<DatePicker
+									  selected={this.state.startDate}
+									  selectsStart
+									  showTimeSelect
+									  inline
+									  startDate={this.state.startDate}
+									  endDate={this.state.endDate}
+									  onChange={this.handleChangeStart}
+									/>
+								</td>
+								<td>
+									<DatePicker
+									  selected={this.state.endDate}
+									  selectsEnd
+									  showTimeSelect
+									  inline
+									  startDate={this.state.startDate}
+									  endDate={this.state.endDate}
+									  onChange={this.handleChangeEnd}
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		);
 	}

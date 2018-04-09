@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Photos } from '../components/photos';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
@@ -10,15 +11,74 @@ class Gallery extends Component {
 		this.state = {
 			width: 0,
 			height: 0,
-			photos: this.prepPhotos(window.props.photos),
+			photos: [],
+			galleryPhotos: [],
+			startDate: moment().subtract(7, "days"),
+			endDate: moment(),
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.prepPhotos = this.prepPhotos.bind(this);
+		this.handleChangeStart = this.handleChangeStart.bind(this);
+		this.handleChangeEnd = this.handleChangeEnd.bind(this);
+		this.limitPhotos = this.limitPhotos.bind(this);
+	}
+
+	handleChangeStart(date) {
+		const d = date;
+		this.setState({
+			startDate: d,
+			chartReadings: this.prepPhotos(
+				this.limitPhotos(this.state.photos, d.valueOf()), undefined)
+		});
+	}
+
+	handleChangeEnd(date) {
+		const d = date;
+		this.setState({
+			endDate: d,
+			galleryPhotos: this.prepPhotos(
+				this.limitPhotos(this.state.photos, undefined, d.valueOf()))
+		});
+	}
+
+	limitPhotos(photos, startDate, endDate) {
+		let sD, eD;
+		if (startDate === undefined) {
+			sD = moment(this.state.startDate);
+		} else {
+			sD = moment(startDate);
+		}
+		if (endDate === undefined) {
+			eD = moment(this.state.endDate);
+		} else {
+			eD = moment(endDate);
+		}
+
+		console.log(sD);
+		console.log(eD);
+
+		let newPhotos = [];
+		photos.forEach(photo => {
+			let d = moment(photo.date_string);
+			console.log(d)
+			if ( d > sD && d < eD ) {
+				newPhotos.push(photo);
+			}
+		});
+
+		console.log(newPhotos);
+
+		return newPhotos;
 	}
 
 	componentDidMount() {
 		this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
+		let photos = window.props.photos;
+		this.setState({
+			photos: photos,
+			galleryPhotos: this.prepPhotos(this.limitPhotos(photos)),
+		});
 	}
 
 	componentWillUnmount() {
@@ -33,7 +93,7 @@ class Gallery extends Component {
 		const newPhotos = photos.map((elem, i) => {
 			return {
 				original: elem.location,
-				thumbnail: "",
+				thumbnail: elem.location,
 			}
 		});
 
@@ -41,8 +101,52 @@ class Gallery extends Component {
 	}
 
 	render() {
+		console.log(this.state.galleryPhotos);
 		return (
-			<ImageGallery items={this.state.photos} />
+			<div>
+				<ImageGallery items={this.state.galleryPhotos} />
+				<div className="date-selection">
+					<table align="center">
+						<caption>Select a start and end date to limit the chart</caption>
+						<thead>
+							<tr>
+								<th>
+									Select start date
+								</th>
+								<th>
+									Select end date
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<DatePicker
+									  selected={this.state.startDate}
+									  selectsStart
+									  showTimeSelect
+									  inline
+									  startDate={this.state.startDate}
+									  endDate={this.state.endDate}
+									  onChange={this.handleChangeStart}
+									/>
+								</td>
+								<td>
+									<DatePicker
+									  selected={this.state.endDate}
+									  selectsEnd
+									  showTimeSelect
+									  inline
+									  startDate={this.state.startDate}
+									  endDate={this.state.endDate}
+									  onChange={this.handleChangeEnd}
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		);
 	}
 }
