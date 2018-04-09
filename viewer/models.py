@@ -24,14 +24,14 @@ class Photo(models.Model):
 		# Set our max thumbnail size in a tuple (max width, max height)
 		THUMBNAIL_SIZE = (200,200)
 
-		DJANGO_TYPE = self.photo.file.content_type
+		# DJANGO_TYPE = self.photo.file.content_type
 
-		if DJANGO_TYPE == 'image/jpeg':
-			PIL_TYPE = 'jpeg'
-			FILE_EXTENSION = 'jpg'
-		elif DJANGO_TYPE == 'image/png':
-			PIL_TYPE = 'png'
-			FILE_EXTENSION = 'png'
+		# if DJANGO_TYPE == 'image/jpeg':
+		PIL_TYPE = 'jpeg'
+		FILE_EXTENSION = 'jpg'
+		# elif DJANGO_TYPE == 'image/png':
+		# 	PIL_TYPE = 'png'
+		# 	FILE_EXTENSION = 'png'
 
 		# Open original photo which we want to thumbnail using PIL's Image
 		image = Image.open(BytesIO(self.photo.read()))
