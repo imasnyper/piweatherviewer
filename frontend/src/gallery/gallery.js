@@ -25,35 +25,40 @@ class Gallery extends Component {
 
 	handleChangeStart(date) {
 		const d = date;
+		const photos = this.prepPhotos(
+				this.limitPhotos(this.state.photos, d.valueOf()), undefined)
 		this.setState({
 			startDate: d,
-			chartReadings: this.prepPhotos(
-				this.limitPhotos(this.state.photos, d.valueOf()), undefined)
+			galleryPhotos: photos,
 		});
-		console.log(d);
+		this.forceUpdate();
 	}
 
 	handleChangeEnd(date) {
 		const d = date;
+		const photos = this.prepPhotos(
+				this.limitPhotos(this.state.photos, undefined, d.valueOf()))
 		this.setState({
 			endDate: d,
-			galleryPhotos: this.prepPhotos(
-				this.limitPhotos(this.state.photos, undefined, d.valueOf()))
+			galleryPhotos: photos,
 		});
-		console.log(d);
 	}
 
 	limitPhotos(photos, startDate, endDate) {
 		let sD, eD;
 		if (startDate === undefined) {
 			sD = moment(this.state.startDate);
+			console.log("sD came from state");
 		} else {
 			sD = moment(startDate);
+			console.log("sD came from function");
 		}
 		if (endDate === undefined) {
 			eD = moment(this.state.endDate);
+			console.log("eD came from state");
 		} else {
 			eD = moment(endDate);
+			console.log("eD came from function");
 		}
 
 		let newPhotos = [];
