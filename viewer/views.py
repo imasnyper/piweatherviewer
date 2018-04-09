@@ -38,12 +38,21 @@ def prep_photos(photos):
 	for photo in photos:
 		normalized = current_timezone.normalize(photo.uploaded_at.astimezone(current_timezone))
 		date_string = normalized.strftime("%Y-%m-%dT%H:%M:%S")
-		photo_dict = {
+		
+		try:
+			photo_dict = {
 				'location': photo.photo.url,
 				'name': photo.photo.name,
 				'thumbnail': photo.thumbnail.url,
 				'date_string': date_string,
-			  }
+			}
+		except ValueError:
+			photo_dict = {
+				'location': photo.photo.url,
+				'name': photo.photo.name,
+				'thumbnail': '',
+				'date_string': date_string,
+			}
 		photos_prop.append(photo_dict)
 
 	return photos_prop
