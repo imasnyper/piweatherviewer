@@ -1,0 +1,96 @@
+table {
+	margin-top: 20px;
+}
+
+table caption {
+	font-size: 1.25em;
+	font-weight: bold;
+}
+
+th, td {
+	padding: 0 10px;
+}
+
+.chart-controls {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.toggle-units {
+	display: inline-block;
+	height: 30px;
+	width: 150px;
+	background-color: #ccc;
+	text-align: center;
+	line-height: 30px;
+	border: 2px solid black;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.chart-view {
+	float: right;
+	display: inline-block;
+	height: 30px;
+	width: 75px;
+	background-color: #ccc;
+	text-align: center;
+	line-height: 30px;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+select {
+	float: right;
+}
+
+.date-selection-mobile {
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 20px;
+	text-align: center;
+}
+
+.react-app {
+	margin-bottom: 20px;
+}
+
+.date-selection-mobile,
+{
+	width: 80%;
+	margin: 0 auto;
+}
+
+.date-selection-mobile h4 {
+	width: 90%;
+}
+
+/*.react-datepicker-wrapper {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.react-datepicker-popper {
+	width: 100%;
+	margin: 0 auto;
+}*/
+
+.react-datepicker__input-container {
+	display: absolute;
+}
+
+@media (max-width: 500px) {
+	.date-selection-mobile,
+	.react-datepicker-wrapper,
+	.react-datepicker-popper,
+	.react-datepicker__input-container,
+	input {
+		width: 100%;
+		margin: 0 auto;
+	}
+
+}
