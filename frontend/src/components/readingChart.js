@@ -14,6 +14,7 @@ class CustomTooltip extends React.Component {
 		const pressure_unit = this.props.pressureMetric ? "mbar" : "inHg";
 		let labelText;
 		if (active) {
+			console.log(this.props);
 			const { payload, label } = this.props;
 			const momentObj = moment(label);
 			if ( this.props.myView === "minutes" ) {

@@ -317,66 +317,111 @@ class History extends Component {
 	render() {
 		// const updatedReadings = this.state.chartReadings.slice();
 		// const tempData = [{date_time: new Date().valueOf(), temperature: 23, humidity: 68, pressure: 1018}]
-		return (
-			<div className='react-app'>
-				<div className="chart-controls">
-					<span className="toggle-units" onClick={(e) => {this.handleClick(3, e)}}>Toggle Units</span>
-					<span className={this.state.view === "days" ? "chart-view chart-view-days chart-view-active" : "chart-view chart-view-days"} onClick={(e) => {this.setView('days', e)}}>Days</span>
-					<span className={this.state.view === "hours" ? "chart-view chart-view-hours chart-view-active" : "chart-view chart-view-hours"} onClick={(e) => {this.setView('hours', e)}}>Hours</span>
-					<span className={this.state.view === "minutes" ? "chart-view chart-view-minutes chart-view-active" : "chart-view chart-view-minutes"} onClick={(e) => {this.setView('minutes', e)}}>Minutes</span>
-					
+		if (this.state.width < 700) {
+			return (
+				<div className='react-app'>
+					<div className="chart-controls">
+						<span className="toggle-units" onClick={(e) => {this.handleClick(3, e)}}>Toggle Units</span>
+						<select>
+							<option onClick={(e) => {this.setView('hours', e)}}>Hours</option>
+							<option onClick={(e) => {this.setView('days', e)}}>Days</option>
+							<option onClick={(e) => {this.setView('minutes', e)}}>Minutes</option>
+						</select>
+					</div>
+					<ReadingChart 
+						data={this.state.chartReadings} 
+						tempMetric={this.state.tempMetric} 
+						pressureMetric={this.state.pressureMetric}
+						view={this.state.view}
+						width={this.state.width}
+						clicks={this.handleClick}
+					/>
+					<div className="date-selection-mobile">
+						<h4>Select a start and end date to limit the chart</h4>
+						Select start date
+						<DatePicker
+						  selected={this.state.startDate}
+						  selectsStart
+						  showTimeSelect
+						  startDate={this.state.startDate}
+						  endDate={this.state.endDate}
+						  onChange={this.handleChangeStart}
+						/>
+						Select end date
+						<DatePicker
+						  selected={this.state.endDate}
+						  selectsEnd
+						  showTimeSelect
+						  startDate={this.state.startDate}
+						  endDate={this.state.endDate}
+						  onChange={this.handleChangeEnd}
+						/>
+					</div>
 				</div>
-				<ReadingChart 
-					data={this.state.chartReadings} 
-					tempMetric={this.state.tempMetric} 
-					pressureMetric={this.state.pressureMetric}
-					view={this.state.view}
-					width={this.state.width}
-					clicks={this.handleClick}
-				/>
-				<div className="date-selection">
-					<table align="center">
-						<caption>Select a start and end date to limit the chart</caption>
-						<thead>
-							<tr>
-								<th>
-									Select start date
-								</th>
-								<th>
-									Select end date
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<DatePicker
-									  selected={this.state.startDate}
-									  selectsStart
-									  showTimeSelect
-									  inline
-									  startDate={this.state.startDate}
-									  endDate={this.state.endDate}
-									  onChange={this.handleChangeStart}
-									/>
-								</td>
-								<td>
-									<DatePicker
-									  selected={this.state.endDate}
-									  selectsEnd
-									  showTimeSelect
-									  inline
-									  startDate={this.state.startDate}
-									  endDate={this.state.endDate}
-									  onChange={this.handleChangeEnd}
-									/>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+			);
+		} else {
+			return (
+				<div className='react-app'>
+					<div className="chart-controls">
+						<span className="toggle-units" onClick={(e) => {this.handleClick(3, e)}}>Toggle Units</span>
+						<select>
+							<option onClick={(e) => {this.setView('hours', e)}}>Hours</option>
+							<option onClick={(e) => {this.setView('days', e)}}>Days</option>
+							<option onClick={(e) => {this.setView('minutes', e)}}>Minutes</option>
+						</select>
+					</div>
+					<ReadingChart 
+						data={this.state.chartReadings} 
+						tempMetric={this.state.tempMetric} 
+						pressureMetric={this.state.pressureMetric}
+						view={this.state.view}
+						width={this.state.width}
+						clicks={this.handleClick}
+					/>
+					<div className="date-selection">
+						<table align="center">
+							<caption>Select a start and end date to limit the chart</caption>
+							<thead>
+								<tr>
+									<th>
+										Select start date
+									</th>
+									<th>
+										Select end date
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<DatePicker
+										  selected={this.state.startDate}
+										  selectsStart
+										  showTimeSelect
+										  inline
+										  startDate={this.state.startDate}
+										  endDate={this.state.endDate}
+										  onChange={this.handleChangeStart}
+										/>
+									</td>
+									<td>
+										<DatePicker
+										  selected={this.state.endDate}
+										  selectsEnd
+										  showTimeSelect
+										  inline
+										  startDate={this.state.startDate}
+										  endDate={this.state.endDate}
+										  onChange={this.handleChangeEnd}
+										/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
-		);
+			);
+		}
 	}
 }
 
