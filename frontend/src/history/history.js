@@ -315,8 +315,8 @@ class History extends Component {
 	}
 
 	render() {
-		// const updatedReadings = this.state.chartReadings.slice();
-		// const tempData = [{date_time: new Date().valueOf(), temperature: 23, humidity: 68, pressure: 1018}]
+		// if device width is less than 700 pixels, datepicker is stacked and not inline
+		// otherwise, datepicker inline
 		if (this.state.width < 700) {
 			return (
 				<div className='react-app'>

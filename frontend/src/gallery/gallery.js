@@ -102,52 +102,81 @@ class Gallery extends Component {
 	}
 
 	render() {
-		return (
-			<div>
-				<ImageGallery items={this.state.galleryPhotos} />
-				<div className="date-selection">
-					<table align="center">
-						<caption>Select a start and end date to limit the chart</caption>
-						<thead>
-							<tr>
-								<th>
-									Select start date
-								</th>
-								<th>
-									Select end date
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<DatePicker
-									  selected={this.state.startDate}
-									  selectsStart
-									  showTimeSelect
-									  inline
-									  startDate={this.state.startDate}
-									  endDate={this.state.endDate}
-									  onChange={this.handleChangeStart}
-									/>
-								</td>
-								<td>
-									<DatePicker
-									  selected={this.state.endDate}
-									  selectsEnd
-									  showTimeSelect
-									  inline
-									  startDate={this.state.startDate}
-									  endDate={this.state.endDate}
-									  onChange={this.handleChangeEnd}
-									/>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+		if ( this.state.width < 700 ) {
+			return (
+				<div>
+					<ImageGallery items={this.state.galleryPhotos} />
+					<div className="date-selection-mobile">
+						<h4>Select a start and end date to limit the chart</h4>
+						Select start date
+						<DatePicker
+						  selected={this.state.startDate}
+						  selectsStart
+						  showTimeSelect
+						  startDate={this.state.startDate}
+						  endDate={this.state.endDate}
+						  onChange={this.handleChangeStart}
+						/>
+						Select end date
+						<DatePicker
+						  selected={this.state.endDate}
+						  selectsEnd
+						  showTimeSelect
+						  startDate={this.state.startDate}
+						  endDate={this.state.endDate}
+						  onChange={this.handleChangeEnd}
+						/>
+					</div>
 				</div>
-			</div>
-		);
+			);
+		} else {
+			return (
+				<div>
+					<ImageGallery items={this.state.galleryPhotos} />
+					<div className="date-selection">
+						<table align="center">
+							<caption>Select a start and end date to limit the chart</caption>
+							<thead>
+								<tr>
+									<th>
+										Select start date
+									</th>
+									<th>
+										Select end date
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<DatePicker
+										  selected={this.state.startDate}
+										  selectsStart
+										  showTimeSelect
+										  inline
+										  startDate={this.state.startDate}
+										  endDate={this.state.endDate}
+										  onChange={this.handleChangeStart}
+										/>
+									</td>
+									<td>
+										<DatePicker
+										  selected={this.state.endDate}
+										  selectsEnd
+										  showTimeSelect
+										  inline
+										  startDate={this.state.startDate}
+										  endDate={this.state.endDate}
+										  onChange={this.handleChangeEnd}
+										/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			);
+		}
 	}
 }
 
