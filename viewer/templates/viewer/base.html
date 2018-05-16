@@ -13,11 +13,11 @@
 			<script>console.log("debug on")</script>
 			<link rel="stylesheet" href="{% static 'viewer/css/main.css' %}"/>			
 			<link rel="icon" type="image/x-icon" href="{% static 'viewer/favicon.ico' %}">
-			{% block extra_stylesheets %}{% endblock %}
 		{% else %}
 			<link rel="stylesheet" href="{{ s3_static }}viewer/css/main.css"/>
 			<link rel="icon" type="image/x-icon" href="{{ s3_static }}viewer/favicon.ico">
 		{% endif %}
+		{% block extra_stylesheets %}{% endblock %}
 	</head>
 	<body>
 		<div class="navbar">
