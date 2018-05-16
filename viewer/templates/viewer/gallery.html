@@ -1,0 +1,14 @@
+{% extends 'viewer/base.html' %}
+{% load static %}
+
+{% block extra_stylesheets %}
+	{% if debug %}
+		<link rel="stylesheet" href="{% static 'viewer/css/gallery.css' %}"/>
+		<link rel="stylesheet" href="{% static 'viewer/css/react-datepicker.css' %}"/>
+		<link rel="stylesheet" href="{% static 'viewer/css/react-gallery.css' %}"/>
+	{% else %}
+		<link rel="stylesheet" href="{{ s3_static }}viewer/css/gallery.css"/>
+		<link rel="stylesheet" href="{{ s3_static }}viewer/css/react-datepicker.css"/>
+		<link rel="stylesheet" href="{{ s3_static }}viewer/css/react-gallery.css"/>
+	{% endif %}
+{% endblock extra_stylesheets %}

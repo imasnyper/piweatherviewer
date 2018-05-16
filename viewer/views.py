@@ -61,7 +61,7 @@ def prep_photos(photos):
 
 # Create your views here.
 class Home(View):
-	title = "Wasa Weather"
+	title = "Wasa Wasa Weather"
 	template = 'viewer/base.html'
 	component = 'home.js'
 
@@ -99,8 +99,8 @@ class Home(View):
 		return render(request, self.template, context)
 
 class History(View):
-	title = "Wasa Weather - History"
-	template = 'viewer/base.html'
+	title = "Wasa Wasa Weather - History"
+	template = 'viewer/history.html'
 	component = 'history.js'
 
 	def get(self, request):
@@ -129,8 +129,8 @@ class History(View):
 
 
 class Gallery(View):
-	title = "Wasa Weather - Gallery"
-	template = 'viewer/base.html'
+	title = "Wasa Wasa Weather - Gallery"
+	template = 'viewer/gallery.html'
 	component = 'gallery.js'
 
 	def get(self, request):

@@ -11,18 +11,11 @@
 		<meta name="keywords" content="weather, pi, raspberry pi, python, javascript, react">
 		{% if debug %}
 			<script>console.log("debug on")</script>
-			<link rel="stylesheet" href="{% static 'viewer/css/main.css' %}"/>
-			<link rel="stylesheet" href="{% static 'viewer/css/history.css' %}"/>
-			<link rel="stylesheet" href="{% static 'viewer/css/gallery.css' %}"/>
-			<link rel="stylesheet" href="{% static 'viewer/css/react-datepicker.css' %}"/>
-			<link rel="stylesheet" href="{% static 'viewer/css/react-gallery.css' %}"/>
+			<link rel="stylesheet" href="{% static 'viewer/css/main.css' %}"/>			
 			<link rel="icon" type="image/x-icon" href="{% static 'viewer/favicon.ico' %}">
+			{% block extra_stylesheets %}{% endblock %}
 		{% else %}
 			<link rel="stylesheet" href="{{ s3_static }}viewer/css/main.css"/>
-			<link rel="stylesheet" href="{{ s3_static }}viewer/css/history.css"/>
-			<link rel="stylesheet" href="{{ s3_static }}viewer/css/gallery.css"/>
-			<link rel="stylesheet" href="{{ s3_static }}viewer/css/react-datepicker.css"/>
-			<link rel="stylesheet" href="{{ s3_static }}viewer/css/react-gallery.css"/>
 			<link rel="icon" type="image/x-icon" href="{{ s3_static }}viewer/favicon.ico">
 		{% endif %}
 	</head>
