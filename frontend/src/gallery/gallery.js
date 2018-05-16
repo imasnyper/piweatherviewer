@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import DatePicker from 'react-datepicker';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -13,8 +13,8 @@ class Gallery extends Component {
 			height: 0,
 			photos: [],
 			galleryPhotos: [],
-			startDate: moment().subtract(24, "hours"),
-			endDate: moment(),
+			startDate: moment().startOf("hour").subtract(6, "hours"),
+			endDate: moment().startOf("hour"),
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.prepPhotos = this.prepPhotos.bind(this);
@@ -48,17 +48,13 @@ class Gallery extends Component {
 		let sD, eD;
 		if (startDate === undefined) {
 			sD = moment(this.state.startDate);
-			console.log("sD came from state");
 		} else {
 			sD = moment(startDate);
-			console.log("sD came from function");
 		}
 		if (endDate === undefined) {
 			eD = moment(this.state.endDate);
-			console.log("eD came from state");
 		} else {
 			eD = moment(endDate);
-			console.log("eD came from function");
 		}
 
 		let newPhotos = [];
@@ -95,6 +91,7 @@ class Gallery extends Component {
 			return {
 				original: elem.location,
 				thumbnail: elem.thumbnail !== "" ? elem.thumbnail : elem.location,
+				description: moment(elem.name.substring(6, 21), "DD-MM-YY_HHmmss").tz("America/Toronto").format("MMMM Do h:mm a z"),
 			}
 		});
 

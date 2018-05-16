@@ -14,7 +14,6 @@ class CustomTooltip extends React.Component {
 		const pressure_unit = this.props.pressureMetric ? "mbar" : "inHg";
 		let labelText;
 		if (active) {
-			console.log(this.props);
 			const { payload, label } = this.props;
 			const momentObj = moment(label);
 			if ( this.props.myView === "minutes" ) {
@@ -30,7 +29,6 @@ class CustomTooltip extends React.Component {
 					<p className="label">{labelText}</p>
 					<p style={{color: payload[0].stroke}}className="label">{`Temperature: ${payload[0].value.toFixed(2)}`}&deg;{temp_unit}</p>
 					<p style={{color: payload[1].stroke}}className="label">{`Humidity: ${payload[1].value.toFixed(0)}%`}</p>
-					<p style={{color: payload[2].stroke}}className="label">{`Pressure: ${payload[2].value.toFixed(0)} `}{pressure_unit}</p>
 					</div>
 				);
 			}
@@ -111,11 +109,10 @@ export class ReadingChart extends React.Component {
 				/>
 				<YAxis 
 					yAxisId="right"
-					label={pressureLabel}
+					label={{value: "Humidity", angle: 90, position: "insideRight", offset: -5}}
 					orientation="right" 
-					domain={pressureDomain} 
-					ticks={pressureTicks}
-					onClick={(e) => {this.props.clicks(2, e)}}
+					domain={[0, 100]} 
+					ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
 				/>
 				<CartesianGrid strokeDashArray="3 3" />
 				<Legend verticalAlign="top" />
@@ -137,18 +134,10 @@ export class ReadingChart extends React.Component {
 					activeDot={{r: 4}} 
 				/>
 				<Line 
-					yAxisId="left" 
+					yAxisId="right" 
 					type="monotone" 
 					dataKey="humidity" 
 					stroke="#2e86ab" 
-					dot={false} 
-					activeDot={{r: 4}}
-				/>
-				<Line 
-					yAxisId="right" 
-					type="monotone" 
-					dataKey="pressure" 
-					stroke="#4e4859" 
 					dot={false} 
 					activeDot={{r: 4}}
 				/>

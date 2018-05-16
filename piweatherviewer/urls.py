@@ -25,6 +25,8 @@ urlpatterns = [
 	path('', include('viewer.urls')),
 	path('api/add_photo', views.AddPhoto.as_view(), name='api_add_photo'),
     path('api/add_reading', views.AddReading.as_view(), name='api_add_reading'),
+    path('stopphoto', views.StopPhotoView.as_view(), name='stop_photo'),
+    path('api/isstopped', views.IsStopped.as_view(), name='is_stopped'),
     path('admin/', admin.site.urls),
 ]
 

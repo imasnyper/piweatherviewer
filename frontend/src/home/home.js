@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Reading } from '../components/readings';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { Photos } from '../components/photos';
 
 function Toggle(props) {
@@ -20,7 +20,9 @@ export default class Home extends Component {
 			humidity: window.props.reading.humidity,
 			pressure: window.props.reading.pressure,
 			date_string: window.props.reading.date_string,
+			photo_date: moment(window.props.photo.name.substring(6, 21), "DD-MM-YY_HHmmss"),
 			hasError: false,
+			duration: 0
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.handleClick = this.handleClick.bind(this);
@@ -117,39 +119,82 @@ export default class Home extends Component {
 	}
 
 	componentDidMount() {
+		let d = moment.tz(new Date(this.state.date_string), "UTC").local();
+		let now = moment.tz(new Date(), "UTC").local();
+		let duration = moment.duration(now.diff(d));
 		this.updateWindowDimensions();
+		this.setState({
+			duration: duration.asSeconds(),
+		});
+		this.timerID = setInterval( () => 
+			this.tick(),
+			1000
+		);
+		this.reloadTimerID = setInterval( () => 
+			this.reload(),
+			1000 * 60 * 5
+		)
 		window.addEventListener('resize', this.updateWindowDimensions);
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.updateWindowDimensions);
+		clearInterval(this.timerID);
 	}
 
 	updateWindowDimensions() {
 		this.setState({ width: window.innerWidth, height: window.innerHeight})
 	}
 
+	tick() {
+		let d = moment.tz(new Date(this.state.date_string), "UTC").local();
+		let now = moment.tz(new Date(), "UTC").local();
+		let duration = moment.duration(now.diff(d));
+		this.setState({
+			duration: duration.asSeconds(),
+		})
+	}
+
+	reload() {
+		window.location.reload()
+	}
+
 	render() {
-		const d = new Date(window.props.reading.date_string);
-		console.log(d);
-		console.log(window.props.photos);
-		console.log(this.state.width);
+		let readingStyle;
+	
+		if (this.state.width < 700) {
+			readingStyle = {
+					left: "50%", 
+					top: "50%", 
+					transform: "translate(-50%, -50%)",
+				}
+		}
+		else {
+			readingStyle = 	{
+				left: "50px", 
+				bottom: "50px",
+			}
+		}
 		if (this.state.hasError) {
 			return <h1>Something Went Wrong</h1>
 		}
 		return (
 			<div className='react-app'>
-				<Reading
-					temperature={this.state.temperature}
-					humidity={this.state.humidity}
-					pressure={this.state.pressure}
-					date={d}
-					tempMetric={this.state.tempMetric}
-					pressureMetric={this.state.pressureMetric}
-					onClick={this.handleClick}>
-				</Reading>
-				<button type='button' onClick={(e) => this.handleClick(3, e)}>Toggle</button>
-				<Photos photos={window.props.photos} width={this.state.width}/>
+				<div className="reading-container" style={readingStyle}>
+					<Reading
+						temperature={this.state.temperature}
+						humidity={this.state.humidity}
+						pressure={this.state.pressure}
+						date={this.state.duration}
+						tempMetric={this.state.tempMetric}
+						pressureMetric={this.state.pressureMetric}
+						onClick={this.handleClick}>
+					</Reading>
+				</div>
+				<div className="image-description">
+					{this.state.photo_date.tz("America/Toronto").format("LT z")}
+				</div>
+				<div className="bg-photo" style={{backgroundImage: "url(" + window.props.photo.location + ")"}}></div>
 			</div>
 		);
 	}

@@ -1,3 +1,19 @@
+.image-gallery-description {
+	background: rgba(0, 0, 0, 0.4);
+	bottom: 70px;
+	color: #fff;
+	right: 0;
+	left: auto !important;
+	line-height: 1;
+	padding: 10px 20px;
+	position: absolute;
+	white-space: normal; 
+}
+
+.image-gallery {
+	min-height: 100px;
+}
+
 .date-selection-mobile {
 	width: 80%;
 	margin: 0 auto;

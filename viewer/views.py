@@ -1,3 +1,5 @@
+import datetime
+
 from django.views import View
 from django.shortcuts import render
 from django.utils import timezone
@@ -5,8 +7,8 @@ from django.template import RequestContext
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.conf import settings
 
-from viewer.models import Photo, Reading
-from viewer.serializers import PhotoSerializer, ReadingSerializer
+from viewer.models import Photo, Reading, StopPhoto
+from viewer.serializers import PhotoSerializer, ReadingSerializer, StopPhotoSerializer
 
 from rest_framework import generics
 
@@ -59,7 +61,7 @@ def prep_photos(photos):
 
 # Create your views here.
 class Home(View):
-	title = "Wasa Wasa Weather"
+	title = "Wasa Weather"
 	template = 'viewer/base.html'
 	component = 'home.js'
 
@@ -82,7 +84,7 @@ class Home(View):
 				"date_sting": None,
 			}
 		props = {
-			'photos': [photo,],
+			'photo': photo,
 			'reading': reading,
 		}
 
@@ -97,7 +99,7 @@ class Home(View):
 		return render(request, self.template, context)
 
 class History(View):
-	title = "Wasa Wasa Weather - History"
+	title = "Wasa Weather - History"
 	template = 'viewer/base.html'
 	component = 'history.js'
 
@@ -127,7 +129,7 @@ class History(View):
 
 
 class Gallery(View):
-	title = "Wasa Wasa Weather"
+	title = "Wasa Weather - Gallery"
 	template = 'viewer/base.html'
 	component = 'gallery.js'
 
@@ -158,3 +160,19 @@ class AddPhoto(generics.CreateAPIView):
 class AddReading(generics.CreateAPIView):
 	queryset = Reading.objects.all()
 	serializer_class = ReadingSerializer
+
+
+class IsStopped(generics.RetrieveAPIView):
+	serializer_class = StopPhotoSerializer
+
+	def get_object(self):
+		now = timezone.now()
+		obj = StopPhoto.objects.all().last()
+		return obj
+
+class StopPhotoView(generics.CreateAPIView):
+	queryset = StopPhoto.objects.all()
+	serializer_class = StopPhotoSerializer
+
+
+

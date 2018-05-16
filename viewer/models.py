@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.utils import timezone
 
@@ -73,6 +75,35 @@ class Photo(models.Model):
 
 	def __repr__(self):
 		return self.photo.name
+
+
+class StopPhoto(models.Model):
+	# stopped = models.BooleanField(default=False)
+	start_date = models.DateTimeField(default=timezone.now)
+	end_date = models.DateTimeField(blank=True, null=True)
+
+	@property
+	def stopped(self):
+		return self.end_date > timezone.now()
+	
+
+	def save(self, *args, **kwargs):
+		if not self.end_date:
+			self.end_date = self.start_date + datetime.timedelta(hours=1)
+		super(StopPhoto, self).save(*args, **kwargs)
+
+	def __str__(self):
+		if self.stopped:
+			return "Stopped"
+		else:
+			return "Not Stopped"
+
+	def __repr__(self):
+		if self.stopped:
+			return "Stopped"
+		else:
+			return "Not Stopped"
+
 
 class Reading(models.Model):
 	temperature = models.FloatField()

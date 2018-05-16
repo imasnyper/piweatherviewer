@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from viewer.models import Photo, Reading
+from viewer.models import Photo, Reading, StopPhoto
 
 class PhotoSerializer(serializers.ModelSerializer):
 	photo = serializers.ImageField() # try taking this out. may not need it
@@ -12,3 +12,10 @@ class ReadingSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Reading
 		fields = ('temperature', 'humidity', 'pressure', 'date_time')
+
+class StopPhotoSerializer(serializers.ModelSerializer):
+	start_date = serializers.DateTimeField()
+	end_date = serializers.DateTimeField()
+	class Meta:
+		model = StopPhoto
+		fields = ('stopped', 'start_date', 'end_date')

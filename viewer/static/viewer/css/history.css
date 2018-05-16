@@ -1,3 +1,7 @@
+html {
+	overflow-y: scroll;
+}
+
 table {
 	margin-top: 20px;
 }
@@ -48,6 +52,10 @@ select {
 	float: right;
 }
 
+.chart-date-wrapper {
+	padding-top: 150px;
+}
+
 .date-selection-mobile {
 	width: 80%;
 	margin: 0 auto;
@@ -55,8 +63,8 @@ select {
 	text-align: center;
 }
 
-.react-app {
-	margin-bottom: 20px;
+.date-selection {
+	padding-bottom: 20px;
 }
 
 .date-selection-mobile,

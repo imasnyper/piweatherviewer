@@ -1,38 +1,141 @@
 body {
 	margin: 0;
+	height: 100%;
 }
 html {
-    overflow: scroll;
-    overflow-x: hidden;
+	overflow: scroll;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	height: 100%;
 }
+/* 
 ::-webkit-scrollbar {
-    width: 0px;  /* remove scrollbar space */
-    background: transparent;  /* optional: just make scrollbar invisible */
+	width: 0px;  /* remove scrollbar space 
+	background: transparent;  /* optional: just make scrollbar invisible 
 }
-/* optional: show position indicator in red */
+optional: show position indicator in red 
 ::-webkit-scrollbar-thumb {
-    background: #FF0000;
+	background: #FF0000;
 }
+*/
 
 body {
 	margin: 0;
 }
 
+button {
+	position: relative;
+	width: 100px;
+}
+
+.humidity-circle {
+	position: absolute;
+	left: 210px;
+	bottom: 5px;
+}
+
+.humidity-circle>text, .temp-circle>text {
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+
+.temp-circle>text {
+	cursor: pointer;
+}
+
+svg>.temp-circle {
+	cursor: pointer;
+	z-index: 1000;
+}
+
+#react, .react-app {
+	height: 100%;
+}
+
+.reading-container {
+	left: 50px;
+	bottom: 50px;
+	position: fixed;
+	text-align: center;
+	border-radius: 50%;
+	width: 350px;
+	height: 250px;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+/*.photo-timestamp {
+	right: 50px;
+	bottom: 50px;
+	position: fixed;
+	background: rgba(255, 255, 255, .5);
+	padding: 7px;
+}
+*/
 .reading {
 	padding: 5px;
+	position: absolute;
 }
+
 
 .navbar {
 	width: 100%;
 	text-align: center;
+	position: absolute;
+	z-index: 1000;
+	background: rgba(0, 0, 0, .4);
+	color: white;
+	padding: 20px 0 20px 0;
+}
+
+.navbar>h1{
+	margin: 0;
 }
 
 .nav-item {
 	display: inline-block;
 }
 
+.nav-item>a{
+	color: white;
+	text-decoration: none;
+}
+
 .custom-tooltip {
 	background-color: white;
 	border: 1px solid #ccc;
 	padding: 10px;
+}
+
+.bg-photo {
+	height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.image-description {
+	background: rgba(0, 0, 0, 0.4);
+	bottom: 70px;
+	color: #fff;
+	right: 0;
+	line-height: 1;
+	padding: 10px 20px;
+	position: absolute;
+	white-space: normal; 
+}
+
+@media (max-width: 768px) {
+	.image-description {
+		bottom: 45px;
+		font-size: .8em;
+		padding: 8px 15px; 
+	} 
 }
