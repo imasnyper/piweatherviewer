@@ -1,3 +1,22 @@
+html {
+	overflow-y: scroll;
+}
+
+.navbar{
+	position: relative;
+}
+
+.false {
+	display: none;
+}
+
+.message {
+	text-align: center;
+	margin-top: 15px;
+	font-size: 20px;
+	font-weight: 700;
+}
+
 .image-gallery-description {
 	background: rgba(0, 0, 0, 0.4);
 	bottom: 70px;
@@ -10,8 +29,8 @@
 	white-space: normal; 
 }
 
-.image-gallery {
-	min-height: 100px;
+.date-selection {
+	margin-top: 20px;
 }
 
 .date-selection-mobile {
@@ -30,5 +49,7 @@
 		width: 100%;
 		margin: 0 auto;
 	}
-
+	h1 {
+		font-size: 20px;
+	}	
 }

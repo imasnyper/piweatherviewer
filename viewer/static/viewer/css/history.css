@@ -15,6 +15,10 @@ th, td {
 	padding: 0 10px;
 }
 
+.navbar {
+	position: relative;
+}
+
 .chart-controls {
 	width: 80%;
 	margin: 0 auto;
@@ -53,7 +57,7 @@ select {
 }
 
 .chart-date-wrapper {
-	padding-top: 150px;
+	padding-top: 15px;
 }
 
 .date-selection-mobile {
@@ -100,5 +104,7 @@ select {
 		width: 100%;
 		margin: 0 auto;
 	}
-
+	h1 {
+		font-size: 20px;
+	}
 }

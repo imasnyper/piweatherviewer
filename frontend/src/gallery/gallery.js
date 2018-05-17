@@ -99,11 +99,25 @@ class Gallery extends Component {
 	}
 
 	render() {
+		let galleryHidden;
+		(this.state.galleryPhotos.length > 0) ? 
+			galleryHidden = true : 
+			galleryHidden = false ;
+
+		console.log(this.state.galleryPhotos.length)
+		console.log(galleryHidden);
 		if ( this.state.width < 700 ) {
 			return (
 				<div>
-					<ImageGallery items={this.state.galleryPhotos} />
-					<div className="date-selection-mobile">
+					<div className={"gallery-wrapper " + String(galleryHidden)}>
+						<ImageGallery 
+							items={this.state.galleryPhotos}
+						/>
+					</div>
+					<div className={"message " + String(!galleryHidden)}>
+						No photos for the selected date range. Try extending the range.
+					</div>
+					<div className={"date-selection-mobile"}>
 						<h4>Select a start and end date to limit the chart</h4>
 						Select start date
 						<DatePicker
@@ -129,8 +143,15 @@ class Gallery extends Component {
 		} else {
 			return (
 				<div>
-					<ImageGallery items={this.state.galleryPhotos} />
-					<div className="date-selection">
+					<div className={"gallery-wrapper " + String(galleryHidden)}>
+						<ImageGallery 
+							items={this.state.galleryPhotos}
+						/>
+					</div>
+					<div className={"message " + String(!galleryHidden)}>
+						No photos for the selected date range. Try extending the range.
+					</div>
+					<div className={"date-selection"}>
 						<table align="center">
 							<caption>Select a start and end date to limit the chart</caption>
 							<thead>
