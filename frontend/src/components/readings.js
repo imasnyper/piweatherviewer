@@ -50,8 +50,9 @@ export function Reading(props) {
 	const pressure_unit = props.pressureMetric ? "mbar" : "inHg";
 
 	let tempHsl1, tempHsl2, humidityHsl1, humidityHsl2;
-	// console.log(moment(window.props.photo.name.substring(6, 21), "DD-MM-YY_HHmmss"));
-	// console.log(this.state.photo_date);
+	let tempRad = 120;
+	let humidityRad = 46;
+
 	if (props.tempMetric){
 		let h = mapTempToHSL(props.temperature);
 		tempHsl1 = "hsl(" + h + ",100%,50%)";
@@ -69,33 +70,36 @@ export function Reading(props) {
 	l -= 20;
 	humidityHsl2 = "hsl(225,100%," + l + "%)";
 
+	if (props.width < 768) {
+		tempRad *= .75;
+		humidityRad *= .75;
+	}
+
 	return (
-		<div className="reading">
-			<svg className="temp-circle" width="250px" height="250px">
+		<div className="reading" style={props.style}>
+			<svg className="temp-circle" width={tempRad * 2 + 10} height={tempRad * 2 + 10}>
 			  <defs>
 				<linearGradient id="tempGradient" transform="rotate(90)">
 				  <stop offset="0%" stopColor={tempHsl1}/>
 				  <stop offset="100%" stopColor={tempHsl2}/>
 				</linearGradient>
 			  </defs>
-			  
-			  <circle className="temp-circle" cx="50%" cy="50%" r="120" stroke="url(#tempGradient)" strokeWidth="8" fill="rgba(1, 1, 1, .4)" onClick={(e) => {props.onClick(1, e)}}/>
+			  <circle cx="50%" cy="50%" r={tempRad} stroke="url(#tempGradient)" strokeWidth="8" fill="rgba(1, 1, 1, .4)" onClick={(e) => {props.onClick(1, e)}}/>
 			  <text x="50%" y="55%" dy="0" fontSize="45" fill={tempHsl1} textAnchor="middle" onClick={(e) => {props.onClick(1, e)}}>
 				<tspan>{props.temperature.toFixed(0)}°{temp_unit}</tspan>
 			  </text>
 			  <text x="50%" y="65%" dy="0" fontSize="15" textAnchor="middle" fill="white" onClick={(e) => {props.onClick(1, e)}}>
 				<tspan>{props.date.toFixed(0)}s ago</tspan>
 			  </text>
-			  
 			</svg>
-			<svg className="humidity-circle" width="100px" height="100px">
+			<svg className="humidity-circle" width={humidityRad * 2 + 8} height={humidityRad * 2 + 8}>
 				<defs>
 					<linearGradient id="humidityGradient" transform="rotate(23)">
 					  <stop offset="0%" stopColor={humidityHsl1}/>
 					  <stop offset="100%" stopColor={humidityHsl2}/>
 					</linearGradient>
 				</defs>
-				<circle cx="50%" cy="50%" r="46" stroke="url(#humidityGradient)" strokeWidth="4" fill="rgba(1, 1, 1, .4)"/>
+				<circle cx="50%" cy="50%" r={humidityRad} stroke="url(#humidityGradient)" strokeWidth="4" fill="rgba(1, 1, 1, .4)"/>
 				<text x="50%" y="55%" textAnchor="middle" fontSize="20" fill={humidityHsl1}>
 					<tspan>{props.humidity.toFixed(0)}%</tspan>
 			  	</text>
@@ -118,7 +122,8 @@ export function Readings(props) {
 						date={d}
 						tempMetric={props.tempMetric}
 						pressureMetric={props.pressureMetric}
-						onClick={props.onClick}>
+						onClick={props.onClick}
+						style={props.style}>
 					</Reading>
 				)
 			})}

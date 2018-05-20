@@ -8,16 +8,6 @@ html {
 	overflow-x: hidden;
 	height: 100%;
 }
-/* 
-::-webkit-scrollbar {
-	width: 0px;  /* remove scrollbar space 
-	background: transparent;  /* optional: just make scrollbar invisible 
-}
-optional: show position indicator in red 
-::-webkit-scrollbar-thumb {
-	background: #FF0000;
-}
-*/
 
 body {
 	margin: 0;
@@ -29,9 +19,12 @@ button {
 }
 
 .humidity-circle {
-	position: absolute;
-	left: 210px;
-	bottom: 5px;
+	z-index: 900;
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	margin-left: -11%;
 }
 
 .humidity-circle>text, .temp-circle>text {
@@ -45,42 +38,34 @@ button {
 	cursor: pointer;
 }
 
-svg>.temp-circle {
+.temp-circle {
 	cursor: pointer;
 	z-index: 1000;
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
 }
 
 #react, .react-app {
 	height: 100%;
 }
 
-.reading-container {
-	left: 50px;
-	bottom: 50px;
+.reading {
 	position: fixed;
 	text-align: center;
 	border-radius: 50%;
-	width: 350px;
-	height: 250px;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-content: center;
-	align-items: center;
-	flex-direction: column;
+	align-items: flex-end;
+	flex-direction: row;
 }
 
-/*.photo-timestamp {
-	right: 50px;
-	bottom: 50px;
-	position: fixed;
-	background: rgba(255, 255, 255, .5);
-	padding: 7px;
-}
-*/
-.reading {
+/*.reading {
 	padding: 5px;
 	position: absolute;
-}
+}*/
 
 
 .navbar {
@@ -91,6 +76,10 @@ svg>.temp-circle {
 	background: rgba(0, 0, 0, .4);
 	color: white;
 	padding: 20px 0 20px 0;
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
 }
 
 .navbar>h1{
@@ -129,7 +118,11 @@ svg>.temp-circle {
 	line-height: 1;
 	padding: 10px 20px;
 	position: absolute;
-	white-space: normal; 
+	white-space: normal;
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
 }
 
 @media (max-width: 768px) {
@@ -137,10 +130,7 @@ svg>.temp-circle {
 		bottom: 45px;
 		font-size: .8em;
 		padding: 8px 15px; 
-	} 
-}
-
-@media (max-width: 500px) {
+	}
 	h1 {
 		font-size: 20px;
 	}

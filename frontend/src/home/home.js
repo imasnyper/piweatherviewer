@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Reading } from '../components/readings';
 import moment from 'moment-timezone';
 import { Photos } from '../components/photos';
+import { Navbar } from '../components/navbar';
 
 function Toggle(props) {
 	return 
@@ -22,10 +23,12 @@ export default class Home extends Component {
 			date_string: window.props.reading.date_string,
 			photo_date: moment(window.props.photo.name.substring(6, 21), "DD-MM-YY_HHmmss"),
 			hasError: false,
-			duration: 0
+			duration: 0,
+			visible: true,
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.handleClick = this.handleClick.bind(this);
+		this.toggleVis = this.toggleVis.bind(this);
 		this.convertReading = this.convertReading.bind(this);
 		this.toMetric = this.toMetric.bind(this);
 		this.toStandard = this.toStandard.bind(this);
@@ -64,6 +67,11 @@ export default class Home extends Component {
 				pressure: this.convertReading(this.state.pressure, 2, tempMetric, pressureMetric),
 			});
 		}
+	}
+
+	toggleVis(e) {
+		let vis = this.state.visible
+		this.setState({visible: !vis});
 	}
 
 	convertReading(reading, conversionType, tempMetric, pressureMetric) {
@@ -160,9 +168,9 @@ export default class Home extends Component {
 	}
 
 	render() {
-		let readingStyle;
+		let readingStyle, appStyle;
 	
-		if (this.state.width < 700) {
+		if (this.state.width < 768) {
 			readingStyle = {
 					left: "50%", 
 					top: "50%", 
@@ -175,12 +183,18 @@ export default class Home extends Component {
 				bottom: "50px",
 			}
 		}
+		if (!this.state.visible) {
+			appStyle = {
+				display: "none",
+			}
+		}
 		if (this.state.hasError) {
 			return <h1>Something Went Wrong</h1>
 		}
 		return (
 			<div className='react-app'>
-				<div className="reading-container" style={readingStyle}>
+				<div className="components" style={appStyle}>
+					<Navbar debug={window.props.debug} title={window.props.title}/>
 					<Reading
 						temperature={this.state.temperature}
 						humidity={this.state.humidity}
@@ -188,13 +202,15 @@ export default class Home extends Component {
 						date={this.state.duration}
 						tempMetric={this.state.tempMetric}
 						pressureMetric={this.state.pressureMetric}
-						onClick={this.handleClick}>
+						onClick={this.handleClick}
+						width={this.state.width}
+						style={readingStyle}>
 					</Reading>
+					<div className="image-description">
+						{this.state.photo_date.tz("America/Toronto").format("LT z")}
+					</div>
 				</div>
-				<div className="image-description">
-					{this.state.photo_date.tz("America/Toronto").format("LT z")}
-				</div>
-				<div className="bg-photo" style={{backgroundImage: "url(" + window.props.photo.location + ")"}}></div>
+				<div className="bg-photo" onClick={this.toggleVis} style={{backgroundImage: "url(" + window.props.photo.location + ")"}}></div>
 			</div>
 		);
 	}

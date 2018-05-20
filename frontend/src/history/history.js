@@ -4,6 +4,7 @@ import { Readings } from '../components/readings';
 import { ReadingChart } from '../components/readingChart';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import { Navbar } from '../components/navbar';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -320,6 +321,7 @@ class History extends Component {
 		if (this.state.width < 700) {
 			return (
 				<div className='react-app'>
+					<Navbar debug={window.props.debug} title={window.props.title} />
 					<div className="chart-date-wrapper">
 						<div className="chart-controls">
 							<span className="toggle-units" onClick={(e) => {this.handleClick(3, e)}}>Toggle Units</span>
@@ -364,6 +366,7 @@ class History extends Component {
 		} else {
 			return (
 				<div className='react-app'>
+					<Navbar debug={window.props.debug} title={window.props.title} />
 					<div className="chart-date-wrapper">
 						<div className="chart-controls">
 							<span className="toggle-units" onClick={(e) => {this.handleClick(3, e)}}>Toggle Units</span>

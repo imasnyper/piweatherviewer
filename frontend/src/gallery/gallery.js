@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import DatePicker from 'react-datepicker';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
+import { Navbar } from '../components/navbar';
 
 class Gallery extends Component {
 	constructor(props) {
@@ -109,6 +110,7 @@ class Gallery extends Component {
 		if ( this.state.width < 700 ) {
 			return (
 				<div>
+					<Navbar debug={window.props.debug} title={window.props.title} />
 					<div className={"gallery-wrapper " + String(galleryHidden)}>
 						<ImageGallery 
 							items={this.state.galleryPhotos}
@@ -143,6 +145,7 @@ class Gallery extends Component {
 		} else {
 			return (
 				<div>
+					<Navbar debug={window.props.debug} title={window.props.title} />
 					<div className={"gallery-wrapper " + String(galleryHidden)}>
 						<ImageGallery 
 							items={this.state.galleryPhotos}

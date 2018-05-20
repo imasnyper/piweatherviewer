@@ -86,6 +86,8 @@ class Home(View):
 		props = {
 			'photo': photo,
 			'reading': reading,
+			'debug': settings.DEBUG,
+			'title': self.title
 		}
 
 		context = {
@@ -115,6 +117,8 @@ class History(View):
 		props = {
 			'photos': photos,
 			'readings': readings,
+			'debug': settings.DEBUG,
+			'title': self.title,
 		}
 
 		context = {
@@ -138,7 +142,9 @@ class Gallery(View):
 		photos = prep_photos(photos)
 		current_timezone = timezone.get_current_timezone()
 		props = {
-			'photos': photos
+			'photos': photos,
+			'debug': settings.DEBUG,
+			'title': self.title,
 		}
 
 		context = {
