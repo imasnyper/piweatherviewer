@@ -19,8 +19,8 @@ class History extends Component {
 			view: "hours",
 			readings: [],
 			chartReadings: [],
-			startDate: moment().startOf("day").subtract(2, "days"),
-			endDate: moment().startOf("hour"),
+			startDate: moment(window.props.startDate),
+			endDate: moment(window.props.endDate),
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.setView = this.setView.bind(this);
@@ -237,9 +237,10 @@ class History extends Component {
 		this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
 		let readings = window.props.readings.slice();
+		let chartReadings = this.prepReadings(this.limitReadings(readings), this.state.view);
 		this.setState({
 			readings: readings,
-			chartReadings: this.prepReadings(this.limitReadings(readings), this.state.view),
+			chartReadings: chartReadings,
 		});
 	}
 

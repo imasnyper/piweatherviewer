@@ -1,4 +1,5 @@
 import datetime
+from dateutil.relativedelta import relativedelta
 
 from django.views import View
 from django.shortcuts import render
@@ -72,7 +73,6 @@ class Home(View):
 						'location': photo.photo.url,
 						'name': photo.photo.name,
 					}
-		current_timezone = timezone.get_current_timezone()
 		reading = Reading.objects.last()
 		if reading:
 			reading = prep_readings([reading])[0]
@@ -112,13 +112,31 @@ class History(View):
 					'name': p.photo.name,
 				  }
 				  for p in photos]
-		
-		readings = prep_readings(Reading.objects.order_by('-date_time'))
+		start_date = datetime.datetime.utcnow()
+		end_date = start_date + relativedelta(
+			minutes=-min(start_date.minute%5, start_date.minute%10),
+			second=0,
+			microsecond=0)
+		start_date = start_date + relativedelta(
+			months=-1, 
+			day=1,
+			hour=0,
+			minute=0,
+			second=0,
+			microsecond=0)
+		print(start_date)
+		print(end_date)
+		readings = prep_readings(
+			Reading.objects.filter(
+				date_time__range=(
+					start_date, end_date)).order_by('-date_time')[::5])
 		props = {
 			'photos': photos,
 			'readings': readings,
 			'debug': settings.DEBUG,
 			'title': self.title,
+			'startDate': start_date.strftime("%Y-%m-%dT%H:%M:%S"),
+			'endDate': end_date.strftime("%Y-%m-%dT%H:%M:%S"),
 		}
 
 		context = {
@@ -140,7 +158,6 @@ class Gallery(View):
 	def get(self, request):
 		photos = Photo.objects.order_by("-uploaded_at")
 		photos = prep_photos(photos)
-		current_timezone = timezone.get_current_timezone()
 		props = {
 			'photos': photos,
 			'debug': settings.DEBUG,

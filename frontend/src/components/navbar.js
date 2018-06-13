@@ -10,22 +10,22 @@ export function Navbar(props) {
 	}
 
 	return (
-		<div class="navbar">
+		<div className="navbar">
 			<h1>{ props.title }</h1>
-			<div class="nav-items">
-				<div class="nav-item home">
+			<div className="nav-items">
+				<div className="nav-item home">
 					<a href={baseURL}>Home</a>
 				</div>
-				<div class="nav-item">
+				<div className="nav-item">
 					&nbsp;|&nbsp;
 				</div>
-				<div class="nav-item history">
+				<div className="nav-item history">
 					<a href={baseURL + "history/"}>History</a>
 				</div>
-				<div class="nav-item">
+				<div className="nav-item">
 					&nbsp;|&nbsp;
 				</div>
-				<div class="nav-item history">
+				<div className="nav-item history">
 					<a href={baseURL + "gallery/"}>Gallery</a>
 				</div>
 			</div>
