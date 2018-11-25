@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { Reading } from '../components/readings';
 import moment from 'moment-timezone';
 import { Photos } from '../components/photos';
-import { Navbar } from '../components/navbar';
+import Navbar from '../components/navbar';
+import axios from 'axios';
 
 function Toggle(props) {
 	return 
@@ -127,8 +128,9 @@ export default class Home extends Component {
 	}
 
 	componentDidMount() {
-		let d = moment.tz(new Date(this.state.date_string), "UTC").local();
-		let now = moment.tz(new Date(), "UTC").local();
+		// 2018-06-05T21:06:01
+		let d = moment.tz(moment(this.state.date_string, "YYYY-MM-DDTHH:mm:ss ZZ"), "UTC").local();
+		let now = moment.tz(moment(), "UTC").local();
 		let duration = moment.duration(now.diff(d));
 		this.updateWindowDimensions();
 		this.setState({
@@ -155,8 +157,8 @@ export default class Home extends Component {
 	}
 
 	tick() {
-		let d = moment.tz(new Date(this.state.date_string), "UTC").local();
-		let now = moment.tz(new Date(), "UTC").local();
+		let d = moment.tz(moment(this.state.date_string, "YYYY-MM-DDTHH:mm:ss ZZ"), "UTC").local();
+		let now = moment.tz(moment(), "UTC").local();
 		let duration = moment.duration(now.diff(d));
 		this.setState({
 			duration: duration.asSeconds(),
@@ -194,7 +196,13 @@ export default class Home extends Component {
 		return (
 			<div className='react-app'>
 				<div className="components" style={appStyle}>
-					<Navbar debug={window.props.debug} title={window.props.title}/>
+					<Navbar 
+						debug={window.props.debug} 
+						title={window.props.title}
+						loggedIn={window.props.loggedIn}
+						name={window.props.name}
+						width={this.state.width}>
+					</Navbar>
 					<Reading
 						temperature={this.state.temperature}
 						humidity={this.state.humidity}

@@ -1,28 +1,38 @@
 import datetime
-from dateutil.relativedelta import relativedelta
 
 from django.views import View
 from django.shortcuts import render
 from django.utils import timezone
 from django.template import RequestContext
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.conf import settings
 
 from viewer.models import Photo, Reading, StopPhoto
 from viewer.serializers import PhotoSerializer, ReadingSerializer, StopPhotoSerializer
 
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from dateutil.relativedelta import relativedelta
+import pytz
+
+import pyowm
+
+OWM = pyowm.OWM('76a5e7986bbe8c8521399852dc468f2a')
 
 AWS_MEDIA_LOCATION = 'https://s3.us-east-2.amazonaws.com/piweatherstation/media/'
 AWS_STATIC_LOCATION = "https://s3.us-east-2.amazonaws.com/piweatherstation/static/"
 
 
 def prep_readings(readings):
-	current_timezone = timezone.get_current_timezone()
+	# current_timezone = timezone.get_current_timezone()
 	readings_prop = []
 	for reading in readings:
-		normalized = current_timezone.normalize(reading.date_time.astimezone(current_timezone))
-		date_string = normalized.strftime("%Y-%m-%dT%H:%M:%S")
+		# print(reading.date_time)
+		# normalized = current_timezone.normalize(reading.date_time.astimezone(current_timezone))
+		# print(normalized)
+		date_string = reading.date_time.strftime("%Y-%m-%dT%H:%M:%S %z") # 2018-06-05T21:06:01 +0000
 
 		reading_dict = {
 							'temperature': reading.temperature,
@@ -36,11 +46,11 @@ def prep_readings(readings):
 	return readings_prop
 
 def prep_photos(photos):
-	current_timezone = timezone.get_current_timezone()
+	# current_timezone = timezone.get_current_timezone()
 	photos_prop = []
 	for photo in photos:
-		normalized = current_timezone.normalize(photo.uploaded_at.astimezone(current_timezone))
-		date_string = normalized.strftime("%Y-%m-%dT%H:%M:%S")
+		# normalized = current_timezone.normalize(photo.uploaded_at.astimezone(current_timezone))
+		date_string = photo.uploaded_at.strftime("%Y-%m-%dT%H:%M:%S %z")
 		
 		try:
 			photo_dict = {
@@ -68,6 +78,12 @@ class Home(View):
 
 	def get(self, request):
 		photo = Photo.objects.last()
+		if request.user.is_authenticated:
+			is_authenticated = True
+			name = request.user.first_name
+		else:
+			is_authenticated = False
+			name = None
 		if photo:
 			photo = {
 						'location': photo.photo.url,
@@ -87,7 +103,9 @@ class Home(View):
 			'photo': photo,
 			'reading': reading,
 			'debug': settings.DEBUG,
-			'title': self.title
+			'title': self.title,
+			'loggedIn': is_authenticated,
+			'name': name,
 		}
 
 		context = {
@@ -112,6 +130,12 @@ class History(View):
 					'name': p.photo.name,
 				  }
 				  for p in photos]
+		if request.user.is_authenticated:
+			is_authenticated = True
+			name = request.user.first_name
+		else:
+			is_authenticated = False
+			name = None
 		start_date = datetime.datetime.utcnow()
 		end_date = start_date + relativedelta(
 			minutes=-min(start_date.minute%5, start_date.minute%10),
@@ -124,8 +148,8 @@ class History(View):
 			minute=0,
 			second=0,
 			microsecond=0)
-		print(start_date)
-		print(end_date)
+		start_date = pytz.timezone("UTC").localize(start_date)
+		end_date = pytz.timezone("UTC").localize(end_date)
 		readings = prep_readings(
 			Reading.objects.filter(
 				date_time__range=(
@@ -135,8 +159,10 @@ class History(View):
 			'readings': readings,
 			'debug': settings.DEBUG,
 			'title': self.title,
-			'startDate': start_date.strftime("%Y-%m-%dT%H:%M:%S"),
-			'endDate': end_date.strftime("%Y-%m-%dT%H:%M:%S"),
+			'startDate': start_date.strftime("%Y-%m-%dT%H:%M:%S %z"),
+			'endDate': end_date.strftime("%Y-%m-%dT%H:%M:%S %z"),
+			'loggedIn': is_authenticated,
+			'name': name,
 		}
 
 		context = {
@@ -158,10 +184,19 @@ class Gallery(View):
 	def get(self, request):
 		photos = Photo.objects.order_by("-uploaded_at")
 		photos = prep_photos(photos)
+		print(request.user.is_authenticated)
+		if request.user.is_authenticated:
+			is_authenticated = True
+			name = request.user.first_name
+		else:
+			is_authenticated = False
+			name = None
 		props = {
 			'photos': photos,
 			'debug': settings.DEBUG,
 			'title': self.title,
+			'loggedIn': is_authenticated,
+			'name': name,
 		}
 
 		context = {
@@ -193,9 +228,17 @@ class IsStopped(generics.RetrieveAPIView):
 		obj = StopPhoto.objects.all().last()
 		return obj
 
+
 class StopPhotoView(generics.CreateAPIView):
+	# command to post with curl
+	# curl -X POST -F start_date='2018-07-12T16:57' http://127.0.0.1:8000/stopphoto -H 'Authorization: Token 2b9f16cb6b1ffc212f781aa5bfcebb6b1713bb25'
+
+	permission_classes = (IsAuthenticated,)
+
 	queryset = StopPhoto.objects.all()
 	serializer_class = StopPhotoSerializer
 
+	def perform_create(self, serializer):
+		serializer.save(requested_by=self.request.user)			
 
 

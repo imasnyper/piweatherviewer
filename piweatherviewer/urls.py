@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+import autofixture
+
+autofixture.autodiscover()
 
 from viewer import views
 
@@ -25,8 +28,9 @@ urlpatterns = [
 	path('', include('viewer.urls')),
 	path('api/add_photo', views.AddPhoto.as_view(), name='api_add_photo'),
     path('api/add_reading', views.AddReading.as_view(), name='api_add_reading'),
-    path('stopphoto', views.StopPhotoView.as_view(), name='stop_photo'),
+    path('api/stopphoto', views.StopPhotoView.as_view(), name='stop_photo'),
     path('api/isstopped', views.IsStopped.as_view(), name='is_stopped'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]
 

@@ -15,7 +15,8 @@ class ReadingSerializer(serializers.ModelSerializer):
 
 class StopPhotoSerializer(serializers.ModelSerializer):
 	start_date = serializers.DateTimeField()
-	end_date = serializers.DateTimeField()
+	end_date = serializers.DateTimeField(required=False)
+	requested_by = serializers.ReadOnlyField(source='requested_by.username')
 	class Meta:
 		model = StopPhoto
-		fields = ('stopped', 'start_date', 'end_date')
+		fields = ('stopped', 'start_date', 'end_date', 'requested_by')

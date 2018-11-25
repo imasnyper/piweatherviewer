@@ -4,7 +4,7 @@ import moment from 'moment-timezone';
 import DatePicker from 'react-datepicker';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
-import { Navbar } from '../components/navbar';
+import Navbar from '../components/navbar';
 
 class Gallery extends Component {
 	constructor(props) {
@@ -105,12 +105,18 @@ class Gallery extends Component {
 			galleryHidden = true : 
 			galleryHidden = false ;
 
-		console.log(this.state.galleryPhotos.length)
-		console.log(galleryHidden);
+		console.log(window.props.loggedIn);
+		console.log(window.props.name);
 		if ( this.state.width < 700 ) {
 			return (
 				<div>
-					<Navbar debug={window.props.debug} title={window.props.title} />
+					<Navbar 
+						debug={window.props.debug} 
+						title={window.props.title} 
+						loggedIn={window.props.loggedIn}
+						name={window.props.name}
+						width={this.state.width}>
+					</Navbar>
 					<div className={"gallery-wrapper " + String(galleryHidden)}>
 						<ImageGallery 
 							items={this.state.galleryPhotos}
@@ -145,7 +151,13 @@ class Gallery extends Component {
 		} else {
 			return (
 				<div>
-					<Navbar debug={window.props.debug} title={window.props.title} />
+					<Navbar 
+						debug={window.props.debug}
+						title={window.props.title}
+						name={window.props.name}
+						loggedIn={window.props.loggedIn}
+						width={this.state.width}>
+					</Navbar>
 					<div className={"gallery-wrapper " + String(galleryHidden)}>
 						<ImageGallery 
 							items={this.state.galleryPhotos}

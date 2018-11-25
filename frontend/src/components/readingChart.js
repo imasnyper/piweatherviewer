@@ -78,12 +78,19 @@ export class ReadingChart extends React.Component {
 			left: 20,
 			bottom: 15,
 		};
-		let pressureDomain, pressureTicks, tempLabel, pressureLabel;
+		let pressureDomain, pressureTicks, tempLabel, tempDomain, tempTicks, pressureLabel;
 		this.props.pressureMetric ? pressureDomain = [880, 1090] : pressureDomain = [26, 32];
 		this.props.pressureMetric ? pressureTicks = [880, 950, 1020, 1090] : pressureTicks = [26, 28, 30, 32];
-		this.props.tempMetric ? 
-			tempLabel = {value: "Temperature (\u00B0C)", angle: -90, position: "insideLeft"} :
+		if (this.props.tempMetric) { 
+			tempLabel = {value: "Temperature (\u00B0C)", angle: -90, position: "insideLeft"};
+			tempDomain = [-15, 35];
+			tempTicks = [-15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35];
+		} else {
 			tempLabel = {value: "Temperature (\u00B0F)", angle: -90, position: "insideLeft"}
+			tempDomain = [5, 85];
+			tempTicks = [5, 13, 21, 29, 37, 45, 53, 61, 69, 77, 85];
+		}
+			
 		this.props.pressureMetric ? 
 			pressureLabel = {value: "Pressure (mbar)", angle: 90, position: "insideRight", offset: -5} :
 			pressureLabel = {value: "Pressure (inHg)", angle: 90, position: "insideRight", offset: -5}
@@ -103,8 +110,8 @@ export class ReadingChart extends React.Component {
 				<YAxis 
 					yAxisId="left" 
 					label={tempLabel} 
-					domain={[0, 100]} 
-					ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+					domain={tempDomain}
+					ticks={tempTicks}
 					onClick={(e) => {this.props.clicks(1, e)}}
 				/>
 				<YAxis 

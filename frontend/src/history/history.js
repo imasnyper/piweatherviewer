@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { Readings } from '../components/readings';
 import { ReadingChart } from '../components/readingChart';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
-import { Navbar } from '../components/navbar';
+import moment from 'moment-timezone';
+import Navbar from '../components/navbar';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -19,8 +19,8 @@ class History extends Component {
 			view: "hours",
 			readings: [],
 			chartReadings: [],
-			startDate: moment(window.props.startDate),
-			endDate: moment(window.props.endDate),
+			startDate: moment.tz(moment(window.props.startDate, "YYYY-MM-DDTHH:mm:ss ZZ"), "UTC").local(),
+			endDate: moment.tz(moment(window.props.endDate, "YYYY-MM-DDTHH:mm:ss ZZ"), "UTC").local(),
 		}
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.setView = this.setView.bind(this);
@@ -212,7 +212,7 @@ class History extends Component {
 	limitReadings(readings, startDate, endDate) {
 		let sD, eD;
 		if (startDate === undefined) {
-			sD = moment(this.state.startDate);
+			sD = moment(this.state.endDate);
 		} else {
 			sD = moment(startDate);
 		}
@@ -224,7 +224,7 @@ class History extends Component {
 
 		let newReadings = [];
 		readings.forEach(reading => {
-			let d = moment(reading.date_string);
+			let d = moment.tz(moment(reading.date_string, "YYYY-MM-DDTHH:mm:ss ZZ"), "UTC").local();
 			if ( d > sD && d < eD ) {
 				newReadings.push(reading);
 			}
@@ -238,9 +238,15 @@ class History extends Component {
 		window.addEventListener('resize', this.updateWindowDimensions);
 		let readings = window.props.readings.slice();
 		let chartReadings = this.prepReadings(this.limitReadings(readings), this.state.view);
+		let eD = moment(this.state.endDate); //copy moment object
+		console.log(eD);
+		let sD = eD.subtract(7, "days").local();
+		console.log(sD.format());
+		console.log(eD.format());
 		this.setState({
 			readings: readings,
 			chartReadings: chartReadings,
+			startDate: sD,  // <======WTF
 		});
 	}
 
@@ -269,20 +275,20 @@ class History extends Component {
 
 	prepReadings(readings, view) {
 		let data = readings.map((reading) => {
-			const date = new Date(reading.date_string)
-			const y = date.getFullYear();
-			const m = date.getMonth();
-			const d = date.getDate();
+			const date = moment.tz(moment(reading.date_string, "YYYY-MM-DDTHH:mm:ss ZZ"), "UTC").local()
+			const y = date.year();
+			const m = date.month();
+			const d = date.date();
 			let newDate;
 			if (view === "days") {
-				newDate = new Date(y, m, d).valueOf();
+				newDate = moment([y, m, d]).valueOf();
 			} else if (view === "hours") {
-				const h = date.getHours();
-				newDate = new Date(y, m, d, h).valueOf();
+				const h = date.hours();
+				newDate = moment([y, m, d, h]).valueOf();
 			} else if (view === "minutes") {
-				const h = date.getHours();
-				const min = date.getMinutes();
-				newDate = new Date(y, m, d, h, min).valueOf();
+				const h = date.hours();
+				const min = date.minutes();
+				newDate = moment([y, m, d, h, min]).valueOf();
 			}
 			return {
 				date_time: newDate,
@@ -293,7 +299,8 @@ class History extends Component {
 		});
 
 		data = data.reverse();
-		data = this.groupBy(data, 'date_time');
+		// convert array of objects into array of dicts, with the date_time as the key
+		data = this.groupBy(data, 'date_time'); 
 		data = data.map((date_time) => {
 			let temps = [];
 			let humidities = [];
@@ -319,10 +326,19 @@ class History extends Component {
 	render() {
 		// if device width is less than 700 pixels, datepicker is stacked and not inline
 		// otherwise, datepicker inline
+		console.log(window.props.loggedIn);
+		console.log(window.props.name);
 		if (this.state.width < 700) {
 			return (
 				<div className='react-app'>
-					<Navbar debug={window.props.debug} title={window.props.title} />
+					<Navbar 
+						debug={window.props.debug} 
+						title={window.props.title} 
+						loggedIn={window.props.loggedIn}
+						name={window.props.name}
+						width={this.state.width}>
+					</Navbar>
+
 					<div className="chart-date-wrapper">
 						<div className="chart-controls">
 							<span className="toggle-units" onClick={(e) => {this.handleClick(3, e)}}>Toggle Units</span>
@@ -367,7 +383,13 @@ class History extends Component {
 		} else {
 			return (
 				<div className='react-app'>
-					<Navbar debug={window.props.debug} title={window.props.title} />
+					<Navbar 
+						debug={window.props.debug}
+						title={window.props.title}
+						name={window.props.name}
+						loggedIn={window.props.loggedIn}
+						width={this.state.width}>
+					</Navbar>
 					<div className="chart-date-wrapper">
 						<div className="chart-controls">
 							<span className="toggle-units" onClick={(e) => {this.handleClick(3, e)}}>Toggle Units</span>
