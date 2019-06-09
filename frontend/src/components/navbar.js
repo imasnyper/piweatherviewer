@@ -106,7 +106,7 @@ export default class Navbar extends Component {
 			baseURL: baseURL,
 			title: this.props.title,
 		});
-		if (this.props.loggedIn) {
+		if (this.props.logInOut) {
 			this.setState({
 				logInOut: "Sign Out",
 				loginURL: baseURL + "accounts/logout/",
@@ -123,7 +123,7 @@ export default class Navbar extends Component {
 	}
 
 	render() {
-		if (props.width > 768) {
+		if (this.props.width > 768) {
 			return (
 				<DesktopNav 
 					title={this.state.title} 
@@ -134,6 +134,7 @@ export default class Navbar extends Component {
 				</DesktopNav>
 			);
 		} else {
+			console.log(this.props.width)
 			return (
 				<MobileNav 
 					title={this.state.title} 

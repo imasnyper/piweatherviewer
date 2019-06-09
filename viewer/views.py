@@ -1,5 +1,6 @@
 import datetime
 
+from django.urls import reverse
 from django.views import View
 from django.shortcuts import render
 from django.utils import timezone
@@ -104,7 +105,8 @@ class Home(View):
 			'reading': reading,
 			'debug': settings.DEBUG,
 			'title': self.title,
-			'loggedIn': is_authenticated,
+			'loginURL': reverse('viewer:login'),
+			'logInOut': is_authenticated,
 			'name': name,
 		}
 

@@ -199,9 +199,11 @@ export default class Home extends Component {
 					<Navbar 
 						debug={window.props.debug} 
 						title={window.props.title}
-						loggedIn={window.props.loggedIn}
+						loginURL={window.props.loginURL}
+						logInOut={window.props.logInOut}
 						name={window.props.name}
-						width={this.state.width}>
+						width={this.state.width}
+					>
 					</Navbar>
 					<Reading
 						temperature={this.state.temperature}
