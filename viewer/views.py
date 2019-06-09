@@ -18,9 +18,9 @@ from rest_framework.permissions import IsAuthenticated
 from dateutil.relativedelta import relativedelta
 import pytz
 
-import pyowm
-
-OWM = pyowm.OWM('76a5e7986bbe8c8521399852dc468f2a')
+# import pyowm
+#
+# OWM = pyowm.OWM('76a5e7986bbe8c8521399852dc468f2a')
 
 AWS_MEDIA_LOCATION = 'https://s3.us-east-2.amazonaws.com/piweatherstation/media/'
 AWS_STATIC_LOCATION = "https://s3.us-east-2.amazonaws.com/piweatherstation/static/"
