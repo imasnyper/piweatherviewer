@@ -101,7 +101,7 @@ export function Reading(props) {
                 <text x="50%" y="75%" dy="0" fontsize="15" textAnchor="middle" fill="white" onClick={(e) => {
                     props.onClick(1, e)
                 }}>
-                    <tspan>{props.pressure} {pressure_unit}</tspan>
+                    <tspan>{props.pressure.toFixed(0)} {pressure_unit}</tspan>
                 </text>
             </svg>
             <svg className="humidity-circle" width={humidityRad * 2 + 8} height={humidityRad * 2 + 8}>
